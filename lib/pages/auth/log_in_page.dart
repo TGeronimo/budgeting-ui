@@ -96,7 +96,10 @@ final _formKey = GlobalKey<FormState>();
                             if (_formKey.currentState!.validate()) {
                               final email = _emailController.text;
                               final password = _passwordController.text;
+
                               // TODO send user data to the back-end.
+                              
+                              Navigator.pushNamed(context, '/menu_page');
                             }
                           },
                           style: ElevatedButton.styleFrom(

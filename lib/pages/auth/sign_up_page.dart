@@ -108,7 +108,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             if (_formKey.currentState!.validate()) {
                               final email = _emailController.text;
                               final password = _passwordController.text;
+
                               // TODO send user data to the back-end.
+                              
                             }
                           },
                           style: ElevatedButton.styleFrom(
