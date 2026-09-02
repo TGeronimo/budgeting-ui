@@ -13,6 +13,7 @@ class MenuColumnLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AnimatedContainer(
+        color: const Color.fromARGB(255, 161, 195, 246).withValues(alpha: 0.8),
         width: double.infinity,
         duration: const Duration(milliseconds: 200
           ),
@@ -29,7 +30,7 @@ class MenuColumnLayout extends StatelessWidget {
               icon: Icons.mic,
               title: 'Registrar transação',
             ),
-            SizedBox(height: 24), // Espaçamento entre os cards
+            SizedBox(height: 54), // Espaçamento entre os cards
             OptionCard(
               onTap: () {
                 Navigator.pushNamed(context, '/get-transactions-page');

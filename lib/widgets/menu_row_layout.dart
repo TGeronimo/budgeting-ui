@@ -13,6 +13,7 @@ class MenuRowLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: AnimatedContainer(
+        color: Color.fromARGB(255, 161, 195, 246).withValues(alpha: 0.8),
         duration: const Duration(milliseconds: 200
           ),
         constraints: BoxConstraints(
