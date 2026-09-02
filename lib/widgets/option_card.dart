@@ -18,6 +18,8 @@ class OptionCard extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
+        height: 180,
+        width: 200,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -25,6 +27,7 @@ class OptionCard extends StatelessWidget {
           border: Border.all(color: Colors.grey.shade300),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(

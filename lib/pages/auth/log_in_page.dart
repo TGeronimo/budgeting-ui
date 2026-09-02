@@ -88,6 +88,7 @@ final _formKey = GlobalKey<FormState>();
                             if (value == null || value.isEmpty) {
                               return 'Informe sua senha.';
                             }
+                            return null;
                           },
                         ),
                         const SizedBox(height: 24),
