@@ -15,7 +15,7 @@ class AuthService {
       );
 
       // Se chegou aqui, o back-end respondeu 200 ou 201
-      return UserResponseDto.fromJson(dto.toJson());
+      return UserResponseDto.fromJson(response.data);
 
     } on DioException catch (e) {
       // Aqui você trata erros do servidor
