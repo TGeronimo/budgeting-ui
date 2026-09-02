@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/core/dio/dio_client.dart';
+import 'package:flutter_app_test/features/auth/dto/user_register_dto.dart';
+import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 
 class SignUpPage extends StatefulWidget {
   
@@ -11,8 +14,19 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true; // define se o campo de senha fica obscurecido
+  
   final _emailController = TextEditingController(); // captura o email
   final _passwordController = TextEditingController(); // captura a senha
+  
+  late DioClient dioClient;
+  late AuthService authService;
+
+  @override
+  void initState() {
+    super.initState();
+    dioClient = DioClient();
+    authService = AuthService(dioClient.dio);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +119,26 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               final email = _emailController.text;
                               final password = _passwordController.text;
-                              Navigator.pushNamed(context, '/menu_page');
-                              // TODO send user data to the back-end.
+
+                              final dto = UserRegisterDto(
+                                email: email,
+                                password: password
+                              );
+
+                              try {
+                                final user = await authService.register(dto);
+                                Navigator.pushNamed(context, '/menu_page');
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content:
+                                    Text('Erro ao registrar: $e')
+                                    )
+                                );
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(
