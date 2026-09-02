@@ -23,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
         builder: (context, viewportConstraints) {
           return SingleChildScrollView(
             child: AnimatedContainer(
+              color: const Color.fromARGB(255, 161, 195, 246).withValues(alpha: 0.8),
               duration: const Duration(milliseconds: 200),
               constraints: BoxConstraints(
                 minHeight: viewportConstraints.maxHeight,

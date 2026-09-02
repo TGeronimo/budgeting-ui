@@ -7,6 +7,7 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 161, 195, 246).withValues(alpha: 0.8),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
