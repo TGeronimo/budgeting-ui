@@ -1,3 +1,5 @@
+import 'package:flutter_app_test/features/auth/dto/login_dto.dart';
+
 class UserRegisterDto {
   
   final String email;
@@ -15,5 +17,10 @@ class UserRegisterDto {
     };
   }
 
+  LoginDto toLoginDto() {
+    return LoginDto(
+      email: this.email,
+      password: this.password);
+  }
 
 }

@@ -1,7 +1,12 @@
+import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/core/dio/dio_client.dart';
+import 'package:flutter_app_test/features/auth/dto/login_dto.dart';
+import 'package:flutter_app_test/features/auth/dto/login_response_dto.dart';
 import 'package:flutter_app_test/features/auth/dto/user_register_dto.dart';
 import 'package:flutter_app_test/features/auth/services/auth_service.dart';
+import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 
 class SignUpPage extends StatefulWidget {
   
@@ -17,6 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   
   final _emailController = TextEditingController(); // captura o email
   final _passwordController = TextEditingController(); // captura a senha
+  final _tokenStorage = TokenStorage();
   
   late DioClient dioClient;
   late AuthService authService;
@@ -124,14 +130,20 @@ class _SignUpPageState extends State<SignUpPage> {
                               final email = _emailController.text;
                               final password = _passwordController.text;
 
-                              final dto = UserRegisterDto(
+                              final registerDto = UserRegisterDto(
                                 email: email,
-                                password: password
-                              );
+                                password: password);
 
+                              final loginDto = registerDto.toLoginDto();
+                              
                               try {
                                 // TODO storage of user data to future login
-                                final user = await authService.register(dto);
+                                final registerResponse = await authService.register(registerDto);
+                                final loginResponse = await authService.login(loginDto);
+
+                                await _tokenStorage.saveToken(loginResponse.token);
+                                await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
+                                
                                 Navigator.pushNamed(context, '/menu_page');
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
