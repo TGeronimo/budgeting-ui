@@ -130,6 +130,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               );
 
                               try {
+                                // TODO storage of user data to future login
                                 final user = await authService.register(dto);
                                 Navigator.pushNamed(context, '/menu_page');
                               } catch (e) {
