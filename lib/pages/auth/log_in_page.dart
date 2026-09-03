@@ -26,7 +26,7 @@ final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
-    dioClient = DioClient();
+    dioClient = DioClient(_tokenStorage);
     authService = AuthService(dioClient.dio);
   }
 

@@ -26,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    dioClient = DioClient();
+    dioClient = DioClient(_tokenStorage);
     authService = AuthService(dioClient.dio);
   }
 
