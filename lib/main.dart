@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/services/routes.dart';
+import 'package:flutter_app_test/app/routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); // Fix an issue when using read() in Secure Storage.

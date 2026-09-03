@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/widgets/menu_row_layout.dart';
-import 'package:flutter_app_test/widgets/menu_column_layout.dart';
+import 'package:flutter_app_test/shared/widgets/menu_row_layout.dart';
+import 'package:flutter_app_test/shared/widgets/menu_column_layout.dart';
 
 class MenuPage extends StatelessWidget {
   MenuPage({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/widgets/option_card.dart';
+import 'package:flutter_app_test/shared/widgets/option_card.dart';
 
 class MenuColumnLayout extends StatelessWidget {
   final BoxConstraints constraints;
