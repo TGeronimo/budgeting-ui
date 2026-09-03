@@ -1,15 +1,15 @@
 class LoginResponseDto {
-  final String token;
+  final String accessToken;
   final String refreshToken;
 
   LoginResponseDto({
-    required this.token,
+    required this.accessToken,
     required this.refreshToken
   });
 
   factory LoginResponseDto.fromJson(Map<String, dynamic> json) {
     return LoginResponseDto(
-      token: json["token"],
+      accessToken: json["accessToken"],
       refreshToken: json["refreshToken"]
     );
   }

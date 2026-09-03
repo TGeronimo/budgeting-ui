@@ -2,6 +2,12 @@
 
 A new Flutter project.
 
+# Improvements
+
+1- Manter o snack bar ativo por mais tempo
+2- Melhorar o tratamento de exceções para enviar mensagens mais claras para o usuário. Nesse caso, poderia ter subido a mensagem "E-mail já cadastrado!".
+3- Log para as requisições, e para as respostas do servidor.
+
 ## Getting Started
 
 This is a project to build an UI for the Budgeting application back-end.

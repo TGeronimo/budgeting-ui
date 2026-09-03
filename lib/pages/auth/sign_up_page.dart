@@ -1,9 +1,5 @@
-import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/core/dio/dio_client.dart';
-import 'package:flutter_app_test/features/auth/dto/login_dto.dart';
-import 'package:flutter_app_test/features/auth/dto/login_response_dto.dart';
 import 'package:flutter_app_test/features/auth/dto/user_register_dto.dart';
 import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
@@ -137,11 +133,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               final loginDto = registerDto.toLoginDto();
                               
                               try {
-                                // TODO storage of user data to future login
+                                //TODO define what to do with id returned from the server.
                                 final registerResponse = await authService.register(registerDto);
                                 final loginResponse = await authService.login(loginDto);
 
-                                await _tokenStorage.saveToken(loginResponse.token);
+                                await _tokenStorage.saveToken(loginResponse.accessToken);
                                 await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
                                 
                                 Navigator.pushNamed(context, '/menu_page');
