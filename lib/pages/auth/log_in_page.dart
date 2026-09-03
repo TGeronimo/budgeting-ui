@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/core/dio/dio_client.dart';
+import 'package:flutter_app_test/features/auth/dto/login_dto.dart';
+import 'package:flutter_app_test/features/auth/services/auth_service.dart';
+import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 
 class LogInPage extends StatefulWidget {
 
@@ -14,6 +18,17 @@ final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true; // define se o campo de senha fica obscurecido
   final _emailController = TextEditingController(); // captura o email
   final _passwordController = TextEditingController(); // captura a senha
+  final _tokenStorage = TokenStorage();
+  
+  late DioClient dioClient;
+  late AuthService authService;
+
+  @override
+  void initState() {
+    super.initState();
+    dioClient = DioClient();
+    authService = AuthService(dioClient.dio);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +109,31 @@ final _formKey = GlobalKey<FormState>();
                         ),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               final email = _emailController.text;
                               final password = _passwordController.text;
 
+                              final loginDto = LoginDto(
+                                email: email,
+                                password: password);
+
+                              try {
+                                final loginResponse = await authService.login(loginDto);
+                                await _tokenStorage.saveToken(loginResponse.accessToken);
+                                await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
+                                Navigator.pushNamed(context, '/menu_page');
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Erro no log-in: $e'),
+                                    duration: Duration(milliseconds: 2000),
+                                    )
+                                );                                
+                              }
+
                               // TODO send user data to the back-end.
                               
-                              Navigator.pushNamed(context, '/menu_page');
                             }
                           },
                           style: ElevatedButton.styleFrom(
