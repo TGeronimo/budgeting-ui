@@ -137,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 final registerResponse = await authService.register(registerDto);
                                 final loginResponse = await authService.login(loginDto);
 
-                                await _tokenStorage.saveToken(loginResponse.accessToken);
+                                await _tokenStorage.saveAccessToken(loginResponse.accessToken);
                                 await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
                                 
                                 Navigator.pushNamed(context, '/menu_page');

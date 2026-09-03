@@ -10,10 +10,10 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = tokenStorage.getToken();
+    final accessToken = tokenStorage.getAccessToken();
 
-    if (token == null) {
-      options.headers['Authorization'] = 'Bearer $token';
+    if (accessToken == null) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
     }
     
     handler.next(options);
@@ -32,7 +32,7 @@ class AuthInterceptor extends Interceptor {
       final newTokens = await _refreshToken();
 
       // 2. Salva os novos tokens
-      await tokenStorage.saveToken(newTokens.accessToken);
+      await tokenStorage.saveAccessToken(newTokens.accessToken);
       await tokenStorage.saveRefreshToken(newTokens.refreshToken);
 
       // 3. Clona a requisição original

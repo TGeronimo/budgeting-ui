@@ -120,7 +120,7 @@ final _formKey = GlobalKey<FormState>();
 
                               try {
                                 final loginResponse = await authService.login(loginDto);
-                                await _tokenStorage.saveToken(loginResponse.accessToken);
+                                await _tokenStorage.saveAccessToken(loginResponse.accessToken);
                                 await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
                                 Navigator.pushNamed(context, '/menu_page');
                               } catch (e) {
