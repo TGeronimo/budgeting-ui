@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app_test/features/auth/dto/user_register_dto.dart';
-import 'package:flutter_app_test/features/auth/dto/user_response_dto.dart';
+import 'package:flutter_app_test/features/auth/dto/register_response_dto.dart';
 
 class AuthService {
   final Dio _dio;
 
   AuthService(this._dio);
 
-  Future<UserResponseDto> register(UserRegisterDto dto) async {
+  Future<RegisterResponseDto> register(UserRegisterDto dto) async {
     try {
       final response = await _dio.post(
         '/auth/register',
@@ -15,7 +15,7 @@ class AuthService {
       );
 
       // Se chegou aqui, o back-end respondeu 200 ou 201
-      return UserResponseDto.fromJson(response.data);
+      return RegisterResponseDto.fromJson(response.data);
 
     } on DioException catch (e) {
       // Aqui você trata erros do servidor
