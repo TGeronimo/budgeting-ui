@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/app/landing_page.dart';
 import 'package:flutter_app_test/features/auth/pages/log_in_page.dart';
-import 'package:flutter_app_test/features/transactions/pages/menu_page.dart';
+import 'package:flutter_app_test/features/auth/pages/menu_page.dart';
 import 'package:flutter_app_test/features/auth/pages/sign_up_page.dart';
 
 class Routes {

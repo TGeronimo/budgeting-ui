@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_app_test/app/session_manager.dart';
 import 'package:flutter_app_test/features/auth/dto/login_response_dto.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 
@@ -46,7 +47,11 @@ class AuthInterceptor extends Interceptor {
 
       // 6. Retorna a nova resposta
       handler.resolve(response);
+
     } catch (e) {
+      // Caso falhe, limpa os tokens e notifica o usuário
+      await tokenStorage.clear();
+      SessionManager.instance.notifySessionExpired();
       // Se falhar, o usuário precisa logar de novo
       handler.next(err);
     }
