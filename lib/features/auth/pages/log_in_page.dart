@@ -117,9 +117,6 @@ class _LogInPageState extends State<LogInPage> {
                                 )
                             );
                           }
-
-                          // TODO send user data to the back-end.
-
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -140,7 +137,10 @@ class _LogInPageState extends State<LogInPage> {
                       onPressed: () {
                         Navigator.pushNamed(context, '/sign_up_page');
                       },
-                      child: const Text('Não tem conta? Cadastrar.'),
+                      child: const Text('Não tem conta? Cadastre-se.',
+                        style: TextStyle(fontSize: 13),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ],
                 ),

@@ -23,7 +23,7 @@ class AuthBackground extends StatelessWidget {
                                 ),
                               child: Center(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 48),
+                                  padding: const EdgeInsets.symmetric(horizontal: 24),
                                   child: ConstrainedBox(
                                     constraints: const BoxConstraints(maxWidth: 360),
                                     child: child,

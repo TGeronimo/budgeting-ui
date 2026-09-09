@@ -154,7 +154,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, '/log_in_page');
                     },
-                    child: const Text('Já tenho conta. Fazer log-in.'),
+                    child: const Text('Já tem conta? Entre aqui.',
+                      style: TextStyle(fontSize: 13),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),
