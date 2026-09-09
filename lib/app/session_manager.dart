@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:js_interop';
 
 class SessionManager {
 
