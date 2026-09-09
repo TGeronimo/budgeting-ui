@@ -43,7 +43,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  AuthFormHeader(infoText: 'Informe suas credenciais'),
+                  AuthFormHeader(
+                      infoText: 'Informe suas credenciais',
+                      icon: Icons.person_add_alt_1_rounded,
+                  ),
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(

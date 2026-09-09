@@ -44,7 +44,10 @@ class _LogInPageState extends State<LogInPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    AuthFormHeader(infoText: 'Faça login para continuar'),
+                    AuthFormHeader(
+                        infoText: 'Faça login para continuar',
+                        icon: Icons.login_rounded,
+                    ),
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
