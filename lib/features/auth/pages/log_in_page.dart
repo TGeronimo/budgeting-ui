@@ -5,6 +5,7 @@ import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 import 'package:flutter_app_test/shared/widgets/auth_background.dart';
 import 'package:flutter_app_test/shared/widgets/auth_card.dart';
+import 'package:flutter_app_test/shared/widgets/auth_layout.dart';
 
 class LogInPage extends StatefulWidget {
 
@@ -35,8 +36,7 @@ class _LogInPageState extends State<LogInPage> {
   @override
   Widget build(BuildContext context) {
 
-    return AuthBackground(
-      child: AuthCard(
+    return AuthLayout(
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -162,7 +162,6 @@ class _LogInPageState extends State<LogInPage> {
                   ],
                 ),
               ),
-            ),
           );
   }
 

@@ -3,8 +3,7 @@ import 'package:flutter_app_test/core/dio/dio_client.dart';
 import 'package:flutter_app_test/features/auth/dto/user_register_dto.dart';
 import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
-import 'package:flutter_app_test/shared/widgets/auth_background.dart';
-import 'package:flutter_app_test/shared/widgets/auth_card.dart';
+import 'package:flutter_app_test/shared/widgets/auth_layout.dart';
 
 class SignUpPage extends StatefulWidget {
   
@@ -35,8 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
 
-  return AuthBackground(
-          child: AuthCard(
+  return AuthLayout(
             child: Form(
               key: _formKey,
               child: Column(
@@ -168,7 +166,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
                                 ),
-          ),
-  );
+          );
   }
 }
