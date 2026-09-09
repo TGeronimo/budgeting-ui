@@ -3,6 +3,7 @@ import 'package:flutter_app_test/core/dio/dio_client.dart';
 import 'package:flutter_app_test/features/auth/dto/login_dto.dart';
 import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
+import 'package:flutter_app_test/shared/widgets/auth_card.dart';
 
 class LogInPage extends StatefulWidget {
 
@@ -47,14 +48,7 @@ class _LogInPageState extends State<LogInPage> {
               child: Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 400),
-                  child: Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    margin: EdgeInsets.symmetric(horizontal: 24),
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
+                  child: AuthCard(
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -184,8 +178,7 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                   ),
                 ),
-              ),
-            );
+          );
         },
       ),
     ),
