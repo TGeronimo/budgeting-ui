@@ -13,14 +13,17 @@ class AuthCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+      elevation: 8,
+      margin: EdgeInsets.symmetric(horizontal: 24),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: child,
+
         ),
-        margin: EdgeInsets.symmetric(horizontal: 24),
-        child: Padding(
-            padding: const EdgeInsets.all(32)
-        ),
+
     );
   }
 
