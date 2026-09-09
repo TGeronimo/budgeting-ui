@@ -6,7 +6,7 @@ class AuthBackground extends StatelessWidget {
   const AuthBackground({
     super.key,
     required this.child
-});
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +36,5 @@ class AuthBackground extends StatelessWidget {
                       ),
                     ),
                   );
-                }
   }
 }
