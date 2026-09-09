@@ -3,6 +3,7 @@ import 'package:flutter_app_test/core/dio/dio_client.dart';
 import 'package:flutter_app_test/features/auth/dto/user_register_dto.dart';
 import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
+import 'package:flutter_app_test/shared/widgets/auth_form_header.dart';
 import 'package:flutter_app_test/shared/widgets/auth_layout.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -42,15 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    "Cadastro",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
+                  AuthFormHeader(infoText: 'Informe suas credenciais'),
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(

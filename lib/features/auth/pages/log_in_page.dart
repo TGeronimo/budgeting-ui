@@ -5,6 +5,7 @@ import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 import 'package:flutter_app_test/shared/widgets/auth_background.dart';
 import 'package:flutter_app_test/shared/widgets/auth_card.dart';
+import 'package:flutter_app_test/shared/widgets/auth_form_header.dart';
 import 'package:flutter_app_test/shared/widgets/auth_layout.dart';
 
 class LogInPage extends StatefulWidget {
@@ -43,25 +44,7 @@ class _LogInPageState extends State<LogInPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Icon(
-                      Icons.account_balance_wallet,
-                      size: 56,
-                      color: Colors.blueAccent,
-                    ),
-                    const SizedBox(height: 16),
-                    Text("Budgeting",
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Faça login para continuar',
-                      style: TextStyle(
-                        color: Colors.black54,
-                      ),
-                    ),
-                    SizedBox(height: 8),
+                    AuthFormHeader(infoText: 'Faça login para continuar'),
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
