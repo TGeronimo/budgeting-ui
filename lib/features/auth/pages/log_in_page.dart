@@ -3,8 +3,6 @@ import 'package:flutter_app_test/core/dio/dio_client.dart';
 import 'package:flutter_app_test/features/auth/dto/login_dto.dart';
 import 'package:flutter_app_test/features/auth/services/auth_service.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
-import 'package:flutter_app_test/shared/widgets/auth_background.dart';
-import 'package:flutter_app_test/shared/widgets/auth_card.dart';
 import 'package:flutter_app_test/shared/widgets/auth_form_header.dart';
 import 'package:flutter_app_test/shared/widgets/auth_layout.dart';
 
@@ -53,6 +51,7 @@ class _LogInPageState extends State<LogInPage> {
                       decoration: const InputDecoration(
                         labelText: 'E-mail',
                         border: OutlineInputBorder(),
+                        errorMaxLines: 3,
                       ),
                       keyboardType: TextInputType.emailAddress,
                       autofillHints: const [AutofillHints.email],

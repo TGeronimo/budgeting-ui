@@ -17,11 +17,11 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true; // define se o campo de senha fica obscurecido
-  
+
   final _emailController = TextEditingController(); // captura o email
   final _passwordController = TextEditingController(); // captura a senha
   final _tokenStorage = TokenStorage();
-  
+
   late DioClient dioClient;
   late AuthService authService;
 
@@ -69,6 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
+                      errorMaxLines: 3,
                       labelText: 'Senha',
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
@@ -89,20 +90,21 @@ class _SignUpPageState extends State<SignUpPage> {
                     enableSuggestions: false,
                     autocorrect: false,
                     validator: (value) {
+
                       if (value == null || value.isEmpty) {
                         return 'Informe uma senha.';
                       }
                       if (value.length < 12) {
-                        return 'A senha deve ter pelo menos 12 caracteres.';
+                        return 'Mínimo de 12 caracteres.';
                       }
                       if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                        return 'A senha deve ter pelo menos um símbolo.';
+                        return 'Inclua um símbolo.';
                       }
                       if (!RegExp(r'[0-9]').hasMatch(value)) {
-                        return 'A senha deve ter pelo menos um número.';
+                        return 'Inclua um número.';
                       }
                       if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                        return 'A senha deve ter pelo menos uma letra maiúscula.';
+                        return 'Inclua uma letra maiúscula.';
                       }
                       return null;
                     },
@@ -115,8 +117,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         final password = _passwordController.text;
 
                         final registerDto = UserRegisterDto(
-                          email: email,
-                          password: password);
+                            email: email,
+                            password: password);
 
                         final loginDto = registerDto.toLoginDto();
 
@@ -131,9 +133,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           Navigator.pushNamed(context, '/menu_page');
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Erro ao registrar: $e'),
-                              duration: Duration(milliseconds: 2000),
+                              SnackBar(
+                                content: Text('Erro ao registrar: $e'),
+                                duration: Duration(milliseconds: 2000),
                               )
                           );
                         }
@@ -142,6 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(16),
                       backgroundColor: Colors.blueAccent,
+                      disabledBackgroundColor: Colors.grey,
                     ),
                     child: const Text(
                       'Cadastrar',
