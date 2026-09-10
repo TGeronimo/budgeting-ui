@@ -19,9 +19,10 @@ class _LogInPageState extends State<LogInPage> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true; // define se o campo de senha fica obscurecido
   bool _isLoading = false;
+
   final _emailController = TextEditingController(); // captura o email
   final _passwordController = TextEditingController(); // captura a senha
-  final _tokenStorage = TokenStorage();
+  final _tokenStorage = TokenStorage(); // Gerencia os tokens recebidos
   
   late DioClient dioClient;
   late AuthService authService;
@@ -47,12 +48,17 @@ class _LogInPageState extends State<LogInPage> {
                     final loginResponse = await authService.login(loginDto);
                     await _tokenStorage.saveAccessToken(loginResponse.accessToken);
                     await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
-                    Navigator.pushNamed(context, '/menu_page');
+
+                    if (mounted) {
+                      Navigator.pushNamed(context, '/menu_page');
+                    }
 
                   } catch (e) {
-                    setState(() {
-                      _isLoading = false;
-                    });
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
 
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -75,6 +81,14 @@ class _LogInPageState extends State<LogInPage> {
     super.initState();
     dioClient = DioClient(_tokenStorage);
     authService = AuthService(dioClient.dio);
+  }
+
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -152,16 +166,16 @@ class _LogInPageState extends State<LogInPage> {
                           backgroundColor: Colors.blueAccent,
                           disabledBackgroundColor: Colors.blueAccent,
                         ),
-                        child: _isLoading ?
-                              SizedBox(
+                        child: _isLoading
+                            ? SizedBox(
                                 width: 24,
                                 height: 24,
                                 child: const CircularProgressIndicator(
                                   color: Colors.white,
                                   strokeWidth: 2,
                                 ),
-                              ) :
-                              const Text(
+                              )
+                            : const Text(
                                 'Entrar',
                                 style: TextStyle(
                                   color: Colors.white,
