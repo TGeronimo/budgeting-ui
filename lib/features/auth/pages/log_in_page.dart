@@ -71,6 +71,7 @@ class _LogInPageState extends State<LogInPage> {
                       decoration: InputDecoration(
                         labelText: 'Senha',
                         border: const OutlineInputBorder(),
+                        errorMaxLines: 3,
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -136,13 +137,13 @@ class _LogInPageState extends State<LogInPage> {
                     ),
                     const SizedBox(height: 16),
                     TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/sign_up_page');
-                      },
                       child: const Text('Não tem conta? Cadastre-se.',
                         style: TextStyle(fontSize: 13),
                         textAlign: TextAlign.center,
                       ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/sign_up_page');
+                      },
                     ),
                   ],
                 ),
