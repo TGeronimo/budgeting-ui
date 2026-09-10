@@ -138,7 +138,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           await _tokenStorage.saveAccessToken(loginResponse.accessToken);
                           await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
 
-                          Navigator.pushNamed(context, '/menu_page');
+                          if (mounted) {
+                            Navigator.pushNamed(context, '/menu_page');
+                          }
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
