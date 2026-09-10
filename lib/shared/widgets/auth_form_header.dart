@@ -15,7 +15,6 @@ class AuthFormHeader extends StatelessWidget {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
               Icons.account_balance_wallet_rounded,

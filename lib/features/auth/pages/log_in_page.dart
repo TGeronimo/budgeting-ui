@@ -18,12 +18,57 @@ class LogInPage extends StatefulWidget {
 class _LogInPageState extends State<LogInPage> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true; // define se o campo de senha fica obscurecido
+  bool _isLoading = false;
   final _emailController = TextEditingController(); // captura o email
   final _passwordController = TextEditingController(); // captura a senha
   final _tokenStorage = TokenStorage();
   
   late DioClient dioClient;
   late AuthService authService;
+
+  VoidCallback? get loginAction =>
+      _isLoading
+          ? null
+          : () async {
+
+                if (_formKey.currentState!.validate()) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+
+                  final email = _emailController.text;
+                  final password = _passwordController.text;
+
+                  final loginDto = LoginDto(
+                      email: email,
+                      password: password);
+
+                  try {
+                    final loginResponse = await authService.login(loginDto);
+                    await _tokenStorage.saveAccessToken(loginResponse.accessToken);
+                    await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
+                    Navigator.pushNamed(context, '/menu_page');
+
+                  } catch (e) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Erro no log-in: $e'),
+                          duration: Duration(seconds: 3),
+                        )
+                    );
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
+                  }
+                }
+            };
 
   @override
   void initState() {
@@ -97,42 +142,33 @@ class _LogInPageState extends State<LogInPage> {
                       },
                     ),
                     const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          final email = _emailController.text;
-                          final password = _passwordController.text;
-
-                          final loginDto = LoginDto(
-                              email: email,
-                              password: password);
-
-                          try {
-                            final loginResponse = await authService.login(loginDto);
-                            await _tokenStorage.saveAccessToken(loginResponse.accessToken);
-                            await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
-                            Navigator.pushNamed(context, '/menu_page');
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Erro no log-in: $e'),
-                                  duration: Duration(milliseconds: 2000),
-                                )
-                            );
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.all(16),
-                        backgroundColor: Colors.blueAccent,
-                      ),
-                      child: const Text(
-                        'Entrar',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                    SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: ElevatedButton(
+                        onPressed: loginAction,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(16),
+                          backgroundColor: Colors.blueAccent,
+                          disabledBackgroundColor: Colors.blueAccent,
                         ),
+                        child: _isLoading ?
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              ) :
+                              const Text(
+                                'Entrar',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 16),
