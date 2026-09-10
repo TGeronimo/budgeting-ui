@@ -145,7 +145,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('Erro ao registrar: $e'),
-                                duration: Duration(milliseconds: 2000),
+                                duration: Duration(seconds: 3),
                               )
                           );
                         }
