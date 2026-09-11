@@ -29,7 +29,7 @@ class LandingPage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {Navigator.pushNamed(context, '/sign_up_page');},
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(16),
+                          padding: EdgeInsets.all(4),
                           backgroundColor: Color.fromARGB(255, 1, 35, 88),
                         ),
                         child: Text(
@@ -51,7 +51,7 @@ class LandingPage extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {Navigator.pushNamed(context, '/log_in_page');},
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(16),
+                          padding: EdgeInsets.all(4),
                           backgroundColor: Colors.blueAccent,
                         ),
                             child: Text(
