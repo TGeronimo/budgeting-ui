@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/shared/widgets/auth_banner.dart';
-import 'package:flutter_app_test/shared/widgets/auth_card.dart';
-import 'package:flutter_app_test/shared/widgets/auth_form_header.dart';
 import 'package:flutter_app_test/shared/widgets/auth_layout.dart';
 
 class LandingPage extends StatelessWidget {
