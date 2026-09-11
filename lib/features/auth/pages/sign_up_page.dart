@@ -17,6 +17,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true; // define se o campo de senha fica obscurecido
+  bool _isLoading = false;
 
   final _emailController = TextEditingController(); // captura o email
   final _passwordController = TextEditingController(); // captura a senha
@@ -24,6 +25,42 @@ class _SignUpPageState extends State<SignUpPage> {
 
   late DioClient dioClient;
   late AuthService authService;
+
+  VoidCallback? get registerAction =>
+      _isLoading
+      ? null
+      : () async {
+        if (_formKey.currentState!.validate()) {
+          final email = _emailController.text;
+          final password = _passwordController.text;
+
+          final registerDto = UserRegisterDto(
+              email: email,
+              password: password);
+
+          final loginDto = registerDto.toLoginDto();
+
+          try {
+            //TODO define what to do with id returned from the server.
+            final registerResponse = await authService.register(registerDto);
+            final loginResponse = await authService.login(loginDto);
+
+            await _tokenStorage.saveAccessToken(loginResponse.accessToken);
+            await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
+
+            if (mounted) {
+              Navigator.pushNamed(context, '/menu_page');
+            }
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Erro ao registrar: $e'),
+                  duration: Duration(seconds: 3),
+                )
+            );
+          }
+        }
+      };
 
   @override
   void initState() {
@@ -119,38 +156,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        final email = _emailController.text;
-                        final password = _passwordController.text;
-
-                        final registerDto = UserRegisterDto(
-                            email: email,
-                            password: password);
-
-                        final loginDto = registerDto.toLoginDto();
-
-                        try {
-                          //TODO define what to do with id returned from the server.
-                          final registerResponse = await authService.register(registerDto);
-                          final loginResponse = await authService.login(loginDto);
-
-                          await _tokenStorage.saveAccessToken(loginResponse.accessToken);
-                          await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
-
-                          if (mounted) {
-                            Navigator.pushNamed(context, '/menu_page');
-                          }
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Erro ao registrar: $e'),
-                                duration: Duration(seconds: 3),
-                              )
-                          );
-                        }
-                      }
-                    },
+                    onPressed: registerAction,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.all(16),
                       backgroundColor: Colors.blueAccent,
