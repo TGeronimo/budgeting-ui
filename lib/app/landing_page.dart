@@ -13,9 +13,6 @@ class LandingPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 161, 195, 246).withValues(alpha: 0.8),
         body: AuthLayout(
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -69,8 +66,6 @@ class LandingPage extends StatelessWidget {
                     ),
                   ),
                 ],),
-            ),
-          ),
         ) 
       );
   }
