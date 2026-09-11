@@ -193,7 +193,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         )
                       : const Text(
-                        'Cadastrar',
+                        'Cadastrar', // TODO fix text cover on mobile
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,

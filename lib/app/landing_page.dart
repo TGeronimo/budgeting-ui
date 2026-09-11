@@ -20,7 +20,7 @@ class LandingPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  AuthBanner(),
+                  AuthBanner(), // TODO Fix Render overflow on mobile and desktop
                   SizedBox(
                     height: 48,
                   ),
@@ -36,7 +36,7 @@ class LandingPage extends StatelessWidget {
                           backgroundColor: Color.fromARGB(255, 1, 35, 88),
                         ),
                         child: Text(
-                          "Sign-up",
+                          "Sign-up", // TODO fix text cover on mobile
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -58,7 +58,7 @@ class LandingPage extends StatelessWidget {
                           backgroundColor: Colors.blueAccent,
                         ),
                             child: Text(
-                              "Log-in",
+                              "Log-in", // TODO fix text cover on mobile
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,

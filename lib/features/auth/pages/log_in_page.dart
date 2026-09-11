@@ -176,7 +176,7 @@ class _LogInPageState extends State<LogInPage> {
                                 ),
                               )
                             : const Text(
-                                'Entrar',
+                                'Entrar', // TODO fix text cover on mobile
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
