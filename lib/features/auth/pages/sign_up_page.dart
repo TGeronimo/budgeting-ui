@@ -31,6 +31,10 @@ class _SignUpPageState extends State<SignUpPage> {
       ? null
       : () async {
         if (_formKey.currentState!.validate()) {
+          setState(() {
+            _isLoading = true;
+          });
+
           final email = _emailController.text;
           final password = _passwordController.text;
 
@@ -52,12 +56,25 @@ class _SignUpPageState extends State<SignUpPage> {
               Navigator.pushNamed(context, '/menu_page');
             }
           } catch (e) {
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+              });
+            }
+
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Erro ao registrar: $e'),
                   duration: Duration(seconds: 3),
                 )
             );
+          } finally {
+            if (mounted) {
+              setState(() {
+                _isLoading = false;
+              });
+            }
+
           }
         }
       };
@@ -155,20 +172,34 @@ class _SignUpPageState extends State<SignUpPage> {
                     },
                   ),
                   const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: registerAction,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.all(16),
-                      backgroundColor: Colors.blueAccent,
-                      disabledBackgroundColor: Colors.grey,
-                    ),
-                    child: const Text(
-                      'Cadastrar',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                  SizedBox(
+                    width: 48.0,
+                    height: 48.0,
+                    child: ElevatedButton(
+                      onPressed: registerAction,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(16),
+                        backgroundColor: Colors.blueAccent,
+                        disabledBackgroundColor: Colors.blueAccent,
                       ),
+                      child:
+                      _isLoading
+                      ? SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: const CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                        'Cadastrar',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          ),
+                        ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -183,7 +214,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ],
               ),
-                                ),
+            ),
           );
   }
 }
