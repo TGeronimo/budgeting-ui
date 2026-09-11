@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/shared/widgets/auth_banner.dart';
 
 class AuthFormHeader extends StatelessWidget {
   final String infoText;
@@ -13,25 +14,9 @@ class AuthFormHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-          children: [
-            const Icon(
-              Icons.account_balance_wallet_rounded,
-              size: 36,
-              color: Colors.blueAccent,
-            ),
-            const SizedBox(width: 8),
-            const Text("Budgeting",
-              style: TextStyle(
-                color: Colors.blueAccent,
-                fontSize: 32,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 0.5,
-              ),
-            ),
-          ],
-        ),
+        AuthBanner(),
         const SizedBox(height: 16),
         Icon(
           icon,

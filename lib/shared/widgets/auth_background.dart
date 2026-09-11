@@ -15,14 +15,14 @@ class AuthBackground extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (context, viewportConstraints) {
                     return SingleChildScrollView(
-                            child: AnimatedContainer(
+                            child: Container(
                               color: const Color.fromARGB(255, 161, 195, 246).withValues(alpha: 0.8),
-                              duration: const Duration(milliseconds: 200),
+                              // duration: const Duration(milliseconds: 200),
                               constraints: BoxConstraints(
                                 minHeight: viewportConstraints.maxHeight,
                                 ),
                               child: Center(
-                                child: Padding(
+                                child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 24),
                                   child: ConstrainedBox(
                                     constraints: const BoxConstraints(maxWidth: 360),

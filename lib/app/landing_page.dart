@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/shared/widgets/auth_banner.dart';
+import 'package:flutter_app_test/shared/widgets/auth_card.dart';
+import 'package:flutter_app_test/shared/widgets/auth_form_header.dart';
+import 'package:flutter_app_test/shared/widgets/auth_layout.dart';
 
 class LandingPage extends StatelessWidget {
   
@@ -8,48 +12,65 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 161, 195, 246).withValues(alpha: 0.8),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(width: 200,
-                child: ElevatedButton(onPressed: () {Navigator.pushNamed(context, '/sign_up_page');}, 
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(16),
-                      backgroundColor: Colors.lightGreen,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),),
-                    child: Text(
-                      "Sign-up",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight(600),
-                      ),
-                    ),
+        body: AuthLayout(
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AuthBanner(),
+                  SizedBox(
+                    height: 48,
                   ),
-              ),
-              SizedBox(height: 12,),
-              SizedBox(width: 200,
-                child: ElevatedButton(onPressed: () {Navigator.pushNamed(context, '/log_in_page');},
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.all(16),
-                      backgroundColor: Colors.blueAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),),
+                  SizedBox(
+                    width: 200,
+                    child: SizedBox(
+                      width: 48.0,
+                      height: 48.0,
+                      child: ElevatedButton(
+                        onPressed: () {Navigator.pushNamed(context, '/sign_up_page');},
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(16),
+                          backgroundColor: Color.fromARGB(255, 1, 35, 88),
+                        ),
                         child: Text(
-                          "Log-in",
+                          "Sign-up",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight(600),
                           ),
                         ),
-                ),
-              ),
-            ],),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12,),
+                  SizedBox(width: 200,
+                    child: SizedBox(
+                      width: 48.0,
+                      height: 48.0,
+                      child: ElevatedButton(
+                        onPressed: () {Navigator.pushNamed(context, '/log_in_page');},
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.all(16),
+                          backgroundColor: Colors.blueAccent,
+                        ),
+                            child: Text(
+                              "Log-in",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight(600),
+                              ),
+                            ),
+                      ),
+                    ),
+                  ),
+                ],),
+            ),
+          ),
         ) 
       );
   }
