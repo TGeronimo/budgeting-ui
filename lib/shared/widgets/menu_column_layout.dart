@@ -25,7 +25,7 @@ class MenuColumnLayout extends StatelessWidget {
           children: [
             OptionCard( //TODO OptionCard variando de tamanho, conforme o texto.
               onTap: () {
-                Navigator.pushNamed(context, '/register-transaction-page');
+                Navigator.pushNamed(context, '/register_transaction_page');
               },
               icon: Icons.mic,
               title: 'Registrar transação',
@@ -33,7 +33,7 @@ class MenuColumnLayout extends StatelessWidget {
             SizedBox(height: 54), // Espaçamento entre os cards
             OptionCard(
               onTap: () {
-                Navigator.pushNamed(context, '/get-transactions-page');
+                Navigator.pushNamed(context, '/get_transactions_page');
               },
               icon: Icons.list,
               title: 'Consultar transações')

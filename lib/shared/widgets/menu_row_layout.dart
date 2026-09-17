@@ -27,14 +27,14 @@ class MenuRowLayout extends StatelessWidget {
               children: [
                 OptionCard(
                   onTap: () {
-                    Navigator.pushNamed(context, '/register-transaction-page');
+                    Navigator.pushNamed(context, '/register_transaction_page');
                   },
                   icon: Icons.mic,
                   title: 'Registrar transação',
                 ),
                 OptionCard(
                   onTap: () {
-                    Navigator.pushNamed(context, '/get-transactions-page');
+                    Navigator.pushNamed(context, '/get_transactions_page');
                   },
                   icon: Icons.list,
                   title: 'Consultar transações')
