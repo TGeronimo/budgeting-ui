@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 
-class IdleStateWidget extends StatefulWidget {
-
-  @override
-  State createState() => _IdleStateWidgetState();
-}
-
-class _IdleStateWidgetState extends State<IdleStateWidget> {
-
+class IdleStateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

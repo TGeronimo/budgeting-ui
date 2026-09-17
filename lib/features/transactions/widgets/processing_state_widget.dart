@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ProcessingStateWidget extends StatefulWidget{
-  @override
-  State createState() => _ProcessingStateWidgetState();
-
-}
-
-class _ProcessingStateWidgetState extends State<ProcessingStateWidget> {
-
-
+class ProcessingStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(

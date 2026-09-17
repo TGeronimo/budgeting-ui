@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ErrorStateWidget extends StatefulWidget {
-  @override
-  State createState() => _ErrorStateWidgetState();
-
-}
-
-class _ErrorStateWidgetState extends State<ErrorStateWidget> {
+class ErrorStateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
