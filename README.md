@@ -82,4 +82,19 @@ Nesta solução, ele desempenha duas funções:
 
 2- Suavização no Redimensionamento: Quando a janela da aplicação Web/Desktop é redimensionada ou quando o teclado virtual abre no mobile, a altura do viewport muda instantaneamente. O AnimatedContainer faz com que o formulário se reajuste ao novo centro com uma transição suave (de 200ms), evitando que o layout "pule" bruscamente na tela.
 
+## Transition states
+
+| from       | to         |
+|------------|------------|
+| idle       | recording  |
+| recording  | processing |
+| recording  | error      |
+| processing | playing    |
+| processing | error      |
+| playing    | idle       |
+| playing    | error      |
+| error      | idle       | 
+| idle       | playing    |
+
+
 
