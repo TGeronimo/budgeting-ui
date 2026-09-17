@@ -81,3 +81,5 @@ Nesta solução, ele desempenha duas funções:
 1- Aplicação do minHeight: Define a regra de que o conteúdo deve ter a altura da área visível para garantir a centralização.
 
 2- Suavização no Redimensionamento: Quando a janela da aplicação Web/Desktop é redimensionada ou quando o teclado virtual abre no mobile, a altura do viewport muda instantaneamente. O AnimatedContainer faz com que o formulário se reajuste ao novo centro com uma transição suave (de 200ms), evitando que o layout "pule" bruscamente na tela.
+
+
