@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/features/auth/pages/enum_transaction_page_state.dart';
-
+import 'package:flutter_app_test/features/transactions/widgets/temp/transaction_state_dev_panel.dart';
 import 'package:record/record.dart';
 
-import '../widgets/error_state_widget.dart';
-import '../widgets/idle_state_widget.dart';
-import '../widgets/playing_state_widget.dart';
-import '../widgets/processing_state_widget.dart';
-import '../widgets/recording_state_widget.dart';
+import '../../auth/pages/enum_transaction_page_state.dart';
 
 class RegisterTransactionPage extends StatefulWidget {
 
@@ -20,61 +15,34 @@ class RegisterTransactionPage extends StatefulWidget {
 }
 
 class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
-  EnumTransactionPageState _currentState = EnumTransactionPageState.idle;
+  late AudioRecorder _audioRecorder;
+  final EnumTransactionPageState _currentState = EnumTransactionPageState.idle;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _audioRecorder = AudioRecorder();
+  }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _audioRecorder.dispose();
+  }
+
+  Future<void> _checkPermission() async {
+    debugPrint("Botão pressionado");
+    final hasPermission = await _audioRecorder.hasPermission();
+    debugPrint('Permissão: $hasPermission');
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body:
-      switch (_currentState) {
-        EnumTransactionPageState.idle => IdleStateWidget(),
-        EnumTransactionPageState.recording => RecordingStateWidget(),
-        EnumTransactionPageState.processing => ProcessingStateWidget(),
-        EnumTransactionPageState.playing => PlayingStateWidget(),
-        EnumTransactionPageState.error => ErrorStateWidget(),
-      },
-      persistentFooterButtons: [
-        FloatingActionButton.small(
-            onPressed: () {
-                setState(() {
-                  _currentState = EnumTransactionPageState.recording;
-                });
-        },
-        child: Icon(Icons.mic_rounded),
-        ),
-        FloatingActionButton.small(
-            onPressed: () {
-                setState(() {
-                  _currentState = EnumTransactionPageState.playing;
-                });
-        },
-        child: Icon(Icons.play_arrow_rounded),
-        ),
-        FloatingActionButton.small(
-            onPressed: () {
-                setState(() {
-                  _currentState = EnumTransactionPageState.processing;
-                });
-        },
-        child: Icon(Icons.check_rounded),
-        ),
-        FloatingActionButton.small(
-            onPressed: () {
-                setState(() {
-                  _currentState = EnumTransactionPageState.error;
-                });
-        },
-        child: Icon(Icons.error_rounded),
-        ),
-        FloatingActionButton.small(
-            onPressed: () {
-                setState(() {
-                  _currentState = EnumTransactionPageState.idle;
-                });
-        },
-        child: Icon(Icons.close_rounded),
-        ),
-      ],
-    );
+    return TransactionStateDevPanel(
+        checkPermission: _checkPermission,
+        currentState:  _currentState);
   }
 }
