@@ -16,7 +16,7 @@ class RegisterTransactionPage extends StatefulWidget {
 
 class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
   late AudioRecorder _audioRecorder;
-  final EnumTransactionPageState _currentState = EnumTransactionPageState.idle;
+  EnumTransactionPageState _currentState = EnumTransactionPageState.idle;
 
 
 
@@ -37,6 +37,18 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
     debugPrint("Botão pressionado");
     final hasPermission = await _audioRecorder.hasPermission();
     debugPrint('Permissão: $hasPermission');
+
+    if(hasPermission) {
+      setState(() {
+        _currentState = EnumTransactionPageState.recording;
+      });
+      debugPrint('Mudando para estado: $_currentState');
+    } else {
+      setState(() {
+        _currentState = EnumTransactionPageState.error;
+      });
+      debugPrint('Mudando para estado: $_currentState');
+    }
   }
 
   @override

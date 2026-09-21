@@ -9,11 +9,11 @@ import '../recording_state_widget.dart';
 
 class TransactionStateDevPanel extends StatefulWidget {
 
-  final VoidCallback checkPermission;
+  final VoidCallback? checkPermission;
   EnumTransactionPageState currentState;
 
   TransactionStateDevPanel({
-    required this.checkPermission,
+    this.checkPermission,
     required this.currentState
   });
 

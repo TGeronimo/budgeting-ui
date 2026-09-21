@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class IdleStateWidget extends StatelessWidget {
-  final VoidCallback checkPermission;
+  final VoidCallback? checkPermission;
 
   const IdleStateWidget({
     super.key,
@@ -22,7 +22,7 @@ class IdleStateWidget extends StatelessWidget {
           ),
           SizedBox(height: 24,),
           FloatingActionButton(
-              onPressed: checkPermission,
+              onPressed: checkPermission
           )
         ],
       ),
