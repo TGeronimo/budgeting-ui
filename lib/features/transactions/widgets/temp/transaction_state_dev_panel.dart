@@ -10,10 +10,12 @@ import '../recording_state_widget.dart';
 class TransactionStateDevPanel extends StatefulWidget {
 
   final VoidCallback? checkPermission;
+  final VoidCallback? stopRecording;
   EnumTransactionPageState currentState;
 
   TransactionStateDevPanel({
     this.checkPermission,
+    this.stopRecording,
     required this.currentState
   });
 
@@ -30,7 +32,7 @@ class _TransactionStateDevPanelState extends State<TransactionStateDevPanel>{
       body:
       switch (widget.currentState) {
         EnumTransactionPageState.idle => IdleStateWidget(checkPermission: widget.checkPermission),
-        EnumTransactionPageState.recording => RecordingStateWidget(),
+        EnumTransactionPageState.recording => RecordingStateWidget(stopRecording: widget.stopRecording),
         EnumTransactionPageState.processing => ProcessingStateWidget(),
         EnumTransactionPageState.playing => PlayingStateWidget(),
         EnumTransactionPageState.error => ErrorStateWidget(),

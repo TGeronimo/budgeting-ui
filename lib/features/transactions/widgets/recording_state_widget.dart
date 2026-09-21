@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
 
-class RecordingStateWidget extends StatefulWidget{
+class RecordingStateWidget extends StatelessWidget{
+  final VoidCallback? _stopRecording;
+
+  const RecordingStateWidget({
+    super.key,
+    this._stopRecording
+  });
 
 
   @override
-  State createState() => _RecordingStateWidgetState();
-
-}
-
-  class _RecordingStateWidgetState extends State<RecordingStateWidget>{
-    @override
-    Widget build(BuildContext context) {
-      return Center(
-        child: Column(
-          children: [
-            Text("Recording state"),
-            SizedBox(height: 24,),
-            ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/register_transaction_page'),
-                child: Text("BACK")),
-          ],
-        ),
-      );
-    }
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text("Recording state"),
+          SizedBox(height: 24,),
+          ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, '/register_transaction_page'),
+              child: Text("BACK"),
+          ),
+          SizedBox(height: 24,),
+          FloatingActionButton(
+            onPressed: _stopRecording,
+            child: Icon(Icons.mic_rounded),
+          )
+        ],
+      ),
+    );
   }
+}

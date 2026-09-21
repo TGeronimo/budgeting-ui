@@ -13,6 +13,7 @@ class IdleStateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("Idle state"),
           SizedBox(height: 24,),
@@ -22,7 +23,8 @@ class IdleStateWidget extends StatelessWidget {
           ),
           SizedBox(height: 24,),
           FloatingActionButton(
-              onPressed: checkPermission
+              onPressed: checkPermission,
+              child: Icon(Icons.mic_rounded),
           )
         ],
       ),
