@@ -8,13 +8,14 @@ class TransactionAiService {
 
   final Dio _dio;
   Directory? _tempDirectory;
-  String? receivedFilePath;
+  String? _receivedFilePath;
 
   TransactionAiService(this._dio);
 
   Future<File> processAudio(File audioFile) async {
     if (await audioFile.exists()) {
       debugPrint('Arquivo recebido');
+      debugPrint('${audioFile.path}');
     } else {
       debugPrint('Arquivo não encontrado');
     }
@@ -41,15 +42,29 @@ class TransactionAiService {
 
       _tempDirectory = await getTemporaryDirectory();
       final tempDirPath = _tempDirectory!.path;
-      receivedFilePath = '$tempDirPath/transaction-response.mp3';
+      _receivedFilePath = '$tempDirPath/transaction-response.mp3';
 
 
-      File file = File(receivedFilePath!);
+      File file = File(_receivedFilePath!);
       await file.writeAsBytes(response.data);
+      debugPrint(
+        'MP3 salvo em: ${file.path}',
+      );
+
+      debugPrint(
+        'Tamanho MP3: ${await file.length()} bytes',
+      );
+
       return file;
 
     } on DioException catch (e) {
+      debugPrint('Type: ${e.type}');
+      debugPrint('Message: ${e.message}');
+      debugPrint('Status: ${e.response?.statusCode}');
+      debugPrint('Data: ${e.response?.data}');
+
       throw Exception('Erro na comunicação com backend ${e.message}');
+
     }
 
   }

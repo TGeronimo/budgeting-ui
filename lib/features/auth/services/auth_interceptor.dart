@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_test/app/session_manager.dart';
 import 'package:flutter_app_test/features/auth/dto/login_response_dto.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
@@ -59,6 +60,7 @@ class AuthInterceptor extends Interceptor {
 
   Future<LoginResponseDto> _refreshToken() async {
   final refreshToken = await tokenStorage.getRefreshToken();
+  debugPrint('Refresh token: $refreshToken');
 
   final response = await dio.post(
     '/auth/refresh',

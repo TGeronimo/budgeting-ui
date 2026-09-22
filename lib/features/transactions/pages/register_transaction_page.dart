@@ -1,6 +1,10 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/core/dio/dio_client.dart';
+import 'package:flutter_app_test/features/auth/services/token_storage.dart';
+import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_app_test/features/transactions/widgets/temp/transaction_state_dev_panel.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,8 +22,14 @@ class RegisterTransactionPage extends StatefulWidget {
 }
 
 class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
+  final _tokenStorage = TokenStorage();
+
+  late DioClient _dioClient;
   late AudioRecorder _audioRecorder;
+  late TransactionAiService _aiService;
+
   EnumTransactionPageState _currentState = EnumTransactionPageState.idle;
+
   Directory? _tempDirectory;
   String? _recordedFilePath;
 
@@ -28,6 +38,8 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
   void initState() {
     super.initState();
     _audioRecorder = AudioRecorder();
+    _dioClient = DioClient(_tokenStorage);
+    _aiService = TransactionAiService(_dioClient.dio);
   }
 
   Future<void> _checkPermission() async {
@@ -53,7 +65,7 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
   Future<void> _startRecording() async {
     _tempDirectory = await getTemporaryDirectory();
     final tempDirPath = _tempDirectory!.path;
-    final audioPath = '$tempDirPath/transaction.wav';
+    final audioPath = '$tempDirPath\\transaction.wav';
 
     await _audioRecorder.start(RecordConfig(encoder: AudioEncoder.wav), path: audioPath);
     debugPrint('Gravação iniciada...');
@@ -63,14 +75,23 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
   Future<void> _stopRecording() async {
     _recordedFilePath = await _audioRecorder.stop();
     debugPrint("Arquivo gravado em: $_recordedFilePath");
-    setState(() {
-      _currentState = EnumTransactionPageState.idle;
-    });
     final file = File(_recordedFilePath!);
+    debugPrint('Tamanho: ${await file.length()} bytes');
+
+    setState(() {
+      _currentState = EnumTransactionPageState.processing;
+    });
 
     debugPrint(
-      'Tamanho: ${await file.length()} bytes',
+      'Access Token: ${await _tokenStorage.getAccessToken()}',
     );
+
+    debugPrint(
+      'Refresh Token: ${await _tokenStorage.getRefreshToken()}',
+    );
+
+    final responseAudio = await _aiService.processAudio(file);
+    debugPrint('${responseAudio.path}');
   }
 
   @override

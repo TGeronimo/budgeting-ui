@@ -9,7 +9,7 @@ import '../features/transactions/pages/register_transaction_page.dart';
 
 class Routes {
   static final Map<String, WidgetBuilder> routes = {
-    '/':              (context) => RegisterTransactionPage(), // TODO change back to LandingPage()
+    '/':              (context) => LandingPage(), // TODO change back to LandingPage()
     '/sign_up_page':  (context) => SignUpPage(),
     '/log_in_page':    (context) => LogInPage(),
     '/menu_page':(context) => MenuPage(),
