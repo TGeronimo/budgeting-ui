@@ -52,8 +52,9 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
 
   Future<void> _startRecording() async {
     _tempDirectory = await getTemporaryDirectory();
-    final _tempDirPath = _tempDirectory!.path;
-    final audioPath = '$_tempDirPath/transaction.wav';
+    final tempDirPath = _tempDirectory!.path;
+    final audioPath = '$tempDirPath/transaction.wav';
+
     await _audioRecorder.start(RecordConfig(encoder: AudioEncoder.wav), path: audioPath);
     debugPrint('Gravação iniciada...');
   }
