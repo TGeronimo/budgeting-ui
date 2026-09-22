@@ -20,8 +20,8 @@ class RegisterTransactionPage extends StatefulWidget {
 class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
   late AudioRecorder _audioRecorder;
   EnumTransactionPageState _currentState = EnumTransactionPageState.idle;
-  var _tempDirectory;
-  var _recordedFilePath;
+  Directory? _tempDirectory;
+  String? _recordedFilePath;
 
 
   @override
@@ -52,7 +52,7 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
 
   Future<void> _startRecording() async {
     _tempDirectory = await getTemporaryDirectory();
-    final _tempDirPath = _tempDirectory.path;
+    final _tempDirPath = _tempDirectory!.path;
     final audioPath = '$_tempDirPath/transaction.wav';
     await _audioRecorder.start(RecordConfig(encoder: AudioEncoder.wav), path: audioPath);
     debugPrint('Gravação iniciada...');
