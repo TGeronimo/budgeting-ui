@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/core/dio/dio_client.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
+import 'package:flutter_app_test/features/transactions/cubit/audio_session_cubit.dart';
 import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_app_test/features/transactions/widgets/temp/transaction_state_dev_panel.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
@@ -38,10 +40,10 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
     super.initState();
     _audioRecorder = AudioRecorder();
     _dioClient = DioClient(_tokenStorage);
-    _aiService = TransactionAiService(_dioClient.dio);
+    _aiService = TransactionAiService();
   }
 
-  // TODO remove this method because was transfered to audio_session_cubit
+  // TODO remove this method because it was transferred to audio_session_cubit
   Future<void> _checkPermission() async {
     debugPrint("Botão pressionado");
     final hasPermission = await _audioRecorder.hasPermission();
@@ -62,7 +64,7 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
     }
   }
 
-  // TODO remove this method because was transfered to audio_session_cubit
+  // TODO remove this method because it was transferred to audio_session_cubit
   Future<void> _startRecording() async {
     _tempDirectory = await getTemporaryDirectory();
     final tempDirPath = _tempDirectory!.path;
@@ -72,7 +74,7 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
     debugPrint('Gravação iniciada...');
   }
 
-  // TODO remove this method because was transfered to audio_session_cubit
+  // TODO remove this method because it was transferred to audio_session_cubit
   Future<void> _stopRecording() async {
     _recordedFilePath = await _audioRecorder.stop();
     debugPrint("Arquivo gravado em: $_recordedFilePath");
@@ -97,10 +99,13 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return TransactionStateDevPanel(
-        checkPermission: _checkPermission,
-        stopRecording: _stopRecording,
-        currentState:  _currentState);
+    return BlocProvider(
+      create: (context) => AudioSessionCubit(),
+      child: TransactionStateDevPanel(
+          checkPermission: _checkPermission,
+          stopRecording: _stopRecording,
+          currentState:  _currentState),
+    );
   }
 
   @override

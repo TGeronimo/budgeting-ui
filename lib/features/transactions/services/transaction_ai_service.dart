@@ -46,17 +46,21 @@ class TransactionAiService {
       _receivedFilePath = '$tempDirPath/transaction-response.mp3';
 
 
-      File file = File(_receivedFilePath!);
-      await file.writeAsBytes(response.data);
-      debugPrint(
-        'MP3 salvo em: ${file.path}',
-      );
+      File responseAudio = File(_receivedFilePath!);
+      await responseAudio.writeAsBytes(response.data);
+
+      if(!responseAudio.existsSync()) {
+        throw Exception('Arquivo não encontrado em ${responseAudio.path}');
+      }
 
       debugPrint(
-        'Tamanho MP3: ${await file.length()} bytes',
+        'MP3 salvo em: ${responseAudio.path}',
+      );
+      debugPrint(
+        'Tamanho MP3: ${await responseAudio.length()} bytes',
       );
 
-      return file;
+      return responseAudio;
 
     } on DioException catch (e) {
       debugPrint('Type: ${e.type}');

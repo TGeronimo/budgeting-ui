@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
 
 import '../../../auth/pages/enum_transaction_page_state.dart';
 import '../error_state_widget.dart';
@@ -11,7 +12,7 @@ class TransactionStateDevPanel extends StatefulWidget {
 
   final VoidCallback? checkPermission;
   final VoidCallback? stopRecording;
-  EnumTransactionPageState currentState;
+  AudioSessionState currentState;
 
   TransactionStateDevPanel({
     this.checkPermission,
@@ -31,11 +32,11 @@ class _TransactionStateDevPanelState extends State<TransactionStateDevPanel>{
     return Scaffold(
       body:
       switch (widget.currentState) {
-        EnumTransactionPageState.idle => IdleStateWidget(checkPermission: widget.checkPermission),
-        EnumTransactionPageState.recording => RecordingStateWidget(stopRecording: widget.stopRecording),
-        EnumTransactionPageState.processing => ProcessingStateWidget(),
-        EnumTransactionPageState.playing => PlayingStateWidget(),
-        EnumTransactionPageState.error => ErrorStateWidget(),
+        AudioSessionIdle() => IdleStateWidget(checkPermission: widget.checkPermission),
+        AudioSessionRecording() => RecordingStateWidget(stopRecording: widget.stopRecording),
+        AudioSessionProcessing() => ProcessingStateWidget(),
+        AudioSessionPlaying(responseAudio: responseAudio) => PlayingStateWidget(),
+        AudioSessionError(message: message) => ErrorStateWidget(),
       },
       persistentFooterButtons: [
         FloatingActionButton.small(

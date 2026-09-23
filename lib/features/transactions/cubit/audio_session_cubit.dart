@@ -12,6 +12,8 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
   final AudioRecorder _audioRecorder;
   final TransactionAiService _aiService;
 
+  late File _responseAudio;
+
   AudioSessionCubit({
     AudioRecorder? audioRecorder,
     TransactionAiService? aiService,
@@ -22,6 +24,9 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
 
   Future<void> startRecording() async {
     try {
+      // Apaga o arquivo temporário de resposta do servidor
+      _safeDeleteFile(_responseAudio);
+
       final hasPermission = await _audioRecorder.hasPermission();
       debugPrint('Permissão: $hasPermission');
 
@@ -66,10 +71,10 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
         return;
       }
 
-      final file = File(outputAudioPath);
-      debugPrint('Tamanho: ${await file.length()} bytes.');
+      final audioInput = File(outputAudioPath);
+      debugPrint('Tamanho: ${await audioInput.length()} bytes.');
 
-      if (!file.existsSync()) {
+      if (!audioInput.existsSync()) {
         emit(AudioSessionError(
             message: 'Arquivo de áudio gravado não foi localizado no dispositivo.',
             canRetry: true,
@@ -79,11 +84,14 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
 
       emit(AudioSessionProcessing());
 
-      final File responseAudio = await _aiService.processAudio(file);
-      debugPrint('Áudio de resposta salvo em ${responseAudio.path}.');
+      _responseAudio = await _aiService.processAudio(audioInput);
+      debugPrint('Áudio de resposta salvo em ${_responseAudio.path}.');
+
+      // Apaga o arquivo temporário de envio do áudio da transação que acaba de ser registrada
+      _safeDeleteFile(audioInput);
 
       emit(AudioSessionPlaying(
-          responseAudio: responseAudio));
+          responseAudio: _responseAudio));
 
     } catch (e) {
       debugPrint('Erro ao finalizar e enviar a gravação: $e');
@@ -94,6 +102,16 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
     }
   }
 
+  Future<void> _safeDeleteFile(File? file) async {
+    if (file != null && await file.exists()) {
+      try {
+        await file.delete();
+        debugPrint('Arquivo temporário removido: ${file.path}');
+      } catch (e) {
+        debugPrint('Erro ao deletar arquivo temporário: $e');
+      }
+    }
+  }
 
   @override
   Future<void> close() {
