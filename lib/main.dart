@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/app/routes.dart';
 import 'package:flutter_app_test/app/session_manager.dart';
-import 'package:flutter_app_test/features/transactions/pages/register_transaction_page.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

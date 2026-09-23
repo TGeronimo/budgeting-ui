@@ -33,7 +33,7 @@ class TransactionAiService {
     try {
       debugPrint('Enviando arquivo ${audioFile.path}');
       final response = await _dio.post(
-        'transactions/ai',
+        '/transactions/ai',
         data: formData,
         options: Options(responseType: ResponseType.bytes)
       );
@@ -63,6 +63,7 @@ class TransactionAiService {
       debugPrint('Status: ${e.response?.statusCode}');
       debugPrint('Data: ${e.response?.data}');
 
+      debugPrint('ERROR: ${e.error}');
       throw Exception('Erro na comunicação com backend ${e.message}');
 
     }
