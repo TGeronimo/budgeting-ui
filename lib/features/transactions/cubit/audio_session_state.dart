@@ -9,19 +9,19 @@ class AudioSessionRecording extends AudioSessionState {}
 class AudioSessionProcessing extends AudioSessionState {}
 
 class AudioSessionPlaying extends AudioSessionState {
-  File? responseAudio;
+  final File responseAudio;
 
   AudioSessionPlaying({
-    this.responseAudio
+    required this.responseAudio
   });
 }
 
 class AudioSessionError extends AudioSessionState {
-  String? message;
-  bool? canRetry;
+  final String message;
+  final bool canRetry;
 
   AudioSessionError({
-    this.message,
-    this.canRetry,
+    required this.message,
+    this.canRetry = true,
   });
 }

@@ -41,6 +41,7 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
     _aiService = TransactionAiService(_dioClient.dio);
   }
 
+  // TODO remove this method because was transfered to audio_session_cubit
   Future<void> _checkPermission() async {
     debugPrint("Botão pressionado");
     final hasPermission = await _audioRecorder.hasPermission();
@@ -61,6 +62,7 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
     }
   }
 
+  // TODO remove this method because was transfered to audio_session_cubit
   Future<void> _startRecording() async {
     _tempDirectory = await getTemporaryDirectory();
     final tempDirPath = _tempDirectory!.path;
