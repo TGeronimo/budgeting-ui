@@ -72,7 +72,7 @@ class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
     debugPrint('Gravação iniciada...');
   }
 
-
+  // TODO remove this method because was transfered to audio_session_cubit
   Future<void> _stopRecording() async {
     _recordedFilePath = await _audioRecorder.stop();
     debugPrint("Arquivo gravado em: $_recordedFilePath");

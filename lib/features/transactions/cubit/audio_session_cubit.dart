@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
 import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
@@ -9,14 +10,14 @@ import 'package:record/record.dart';
 
 class AudioSessionCubit extends Cubit<AudioSessionState> {
   final AudioRecorder _audioRecorder;
-
-  Directory? _tempDirectory;
+  final TransactionAiService _aiService;
 
   AudioSessionCubit({
-    TransactionAiService? aiService,
     AudioRecorder? audioRecorder,
+    TransactionAiService? aiService,
   }) :  _audioRecorder = audioRecorder ?? AudioRecorder(),
-        super(AudioSessionIdle());
+        _aiService = aiService ?? TransactionAiService(),
+        super(AudioSessionIdle()); // define o estado inicial chamando o construtor de Cubit
 
 
   Future<void> startRecording() async {
@@ -32,15 +33,15 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
         return;
       }
 
-      _tempDirectory = await getTemporaryDirectory();
-      final tempDirPath = _tempDirectory!.path;
-      final audioPath = '$tempDirPath/transaction.wav';
+      final Directory tempDirectory = await getTemporaryDirectory();
+      final audioPath = '${tempDirectory.path}/transaction.wav';
 
       await _audioRecorder.start(
           RecordConfig(encoder: AudioEncoder.wav),
           path: audioPath,
       );
       debugPrint('Gravação iniciada no caminho: $audioPath');
+
       emit(AudioSessionRecording());
 
     } catch (e) {
@@ -51,6 +52,48 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
       ));
     }
   }
+
+  Future<void> stopAndUpload() async {
+    try {
+      final String? outputAudioPath = await _audioRecorder.stop();
+      debugPrint("Arquivo gravado em: $outputAudioPath.");
+
+      if(outputAudioPath == null) {
+        emit(AudioSessionError(
+            message: 'Não foi possível recuperar o caminho do áudio gravado.',
+            canRetry: true,
+        ));
+        return;
+      }
+
+      final file = File(outputAudioPath);
+      debugPrint('Tamanho: ${await file.length()} bytes.');
+
+      if (!file.existsSync()) {
+        emit(AudioSessionError(
+            message: 'Arquivo de áudio gravado não foi localizado no dispositivo.',
+            canRetry: true,
+        ));
+        return;
+      }
+
+      emit(AudioSessionProcessing());
+
+      final File responseAudio = await _aiService.processAudio(file);
+      debugPrint('Áudio de resposta salvo em ${responseAudio.path}.');
+
+      emit(AudioSessionPlaying(
+          responseAudio: responseAudio));
+
+    } catch (e) {
+      debugPrint('Erro ao finalizar e enviar a gravação: $e');
+      emit(AudioSessionError(
+        message: 'Ocorreu um erro ao tentar processar seu áudio.',
+        canRetry: true,
+      ));
+    }
+  }
+
 
   @override
   Future<void> close() {

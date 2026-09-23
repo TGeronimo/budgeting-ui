@@ -10,12 +10,13 @@ class TransactionAiService {
   Directory? _tempDirectory;
   String? _receivedFilePath;
 
-  TransactionAiService(this._dio);
+  TransactionAiService({
+    Dio? dio
+  }) : _dio = dio ?? Dio();
 
   Future<File> processAudio(File audioFile) async {
     if (await audioFile.exists()) {
-      debugPrint('Arquivo recebido');
-      debugPrint('${audioFile.path}');
+      debugPrint('Arquivo recebido do caminho ${audioFile.path}');
     } else {
       debugPrint('Arquivo não encontrado');
     }
