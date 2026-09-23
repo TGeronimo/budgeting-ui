@@ -1,116 +1,53 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app_test/core/dio/dio_client.dart';
-import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_cubit.dart';
-import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
-import 'package:flutter_app_test/features/transactions/widgets/temp/transaction_state_dev_panel.dart';
+import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:record/record.dart';
 
-import '../../auth/pages/enum_transaction_page_state.dart';
+import '../widgets/states/error_state_widget.dart';
+import '../widgets/states/idle_state_widget.dart';
+import '../widgets/states/playing_state_widget.dart';
+import '../widgets/states/processing_state_widget.dart';
+import '../widgets/states/recording_state_widget.dart';
 
-class RegisterTransactionPage extends StatefulWidget {
+class RegisterTransactionPage extends StatelessWidget {
 
   const RegisterTransactionPage({super.key});
 
 
   @override
-  State createState() => _RegisterTransactionPageState();
+  Widget build(BuildContext context) {
+    return BlocConsumer<AudioSessionCubit, AudioSessionState>(
+      listener: (context, state) {
+        // O Listener trata apenas EFEITOS COLATERAIS (SnackBars, Alertas, Navegação)
+        if (state is AudioSessionError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+            )
+          );
+        }
+      },
+      builder: (context, state) {
+        // O Builder trata APENAS a construção visual baseada no estado atual
+        return Scaffold(
+          body: _buildBodyByState(state),
+        );
+      }
+    );
+  }
 
+  /// Méthodo auxiliar para retornar o Widget correto com base no estado imutável do Cubit
+  Widget _buildBodyByState(AudioSessionState state) {
+    return switch (state) {
+      AudioSessionIdle() => const IdleStateWidget(),
+      AudioSessionRecording() => const RecordingStateWidget(),
+      AudioSessionProcessing() => const ProcessingStateWidget(),
+      AudioSessionPlaying(responseAudio: final audioFile) => PlayingStateWidget(audioFile: audioFile),
+      AudioSessionError(message: final msg) => ErrorStateWidget(message: msg),
+      _ => const SizedBox.shrink(),
+    };
+  }
 }
 
-class _RegisterTransactionPageState extends State<RegisterTransactionPage> {
-  final _tokenStorage = TokenStorage();
-
-  late DioClient _dioClient;
-  late AudioRecorder _audioRecorder;
-  late TransactionAiService _aiService;
-
-  EnumTransactionPageState _currentState = EnumTransactionPageState.idle;
-
-  Directory? _tempDirectory;
-  String? _recordedFilePath;
-
-
-  @override
-  void initState() {
-    super.initState();
-    _audioRecorder = AudioRecorder();
-    _dioClient = DioClient(_tokenStorage);
-    _aiService = TransactionAiService();
-  }
-
-  // TODO remove this method because it was transferred to audio_session_cubit
-  Future<void> _checkPermission() async {
-    debugPrint("Botão pressionado");
-    final hasPermission = await _audioRecorder.hasPermission();
-    debugPrint('Permissão: $hasPermission');
-
-    if(hasPermission) {
-      setState(() {
-        _currentState = EnumTransactionPageState.recording;
-      });
-      await _startRecording();
-      debugPrint('Mudando para estado: $_currentState');
-
-    } else {
-      setState(() {
-        _currentState = EnumTransactionPageState.error;
-      });
-      debugPrint('Mudando para estado: $_currentState');
-    }
-  }
-
-  // TODO remove this method because it was transferred to audio_session_cubit
-  Future<void> _startRecording() async {
-    _tempDirectory = await getTemporaryDirectory();
-    final tempDirPath = _tempDirectory!.path;
-    final audioPath = '$tempDirPath\\transaction.wav';
-
-    await _audioRecorder.start(RecordConfig(encoder: AudioEncoder.wav), path: audioPath);
-    debugPrint('Gravação iniciada...');
-  }
-
-  // TODO remove this method because it was transferred to audio_session_cubit
-  Future<void> _stopRecording() async {
-    _recordedFilePath = await _audioRecorder.stop();
-    debugPrint("Arquivo gravado em: $_recordedFilePath");
-    final file = File(_recordedFilePath!);
-    debugPrint('Tamanho: ${await file.length()} bytes');
-
-    setState(() {
-      _currentState = EnumTransactionPageState.processing;
-    });
-
-    debugPrint(
-      'Access Token: ${await _tokenStorage.getAccessToken()}',
-    );
-
-    debugPrint(
-      'Refresh Token: ${await _tokenStorage.getRefreshToken()}',
-    );
-
-    final responseAudio = await _aiService.processAudio(file);
-    debugPrint('${responseAudio.path}');
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AudioSessionCubit(),
-      child: TransactionStateDevPanel(
-          checkPermission: _checkPermission,
-          stopRecording: _stopRecording,
-          currentState:  _currentState),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _audioRecorder.dispose();
-  }
 }

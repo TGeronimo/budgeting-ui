@@ -119,5 +119,14 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
     return super.close();
   }
 
+  Widget reset() { // TODO
+    throw UnimplementedError();
+  }
+
+  VoidCallback? play(File audioFile) { // TODO
+    throw UnimplementedError();
+
+  }
+
 
 }

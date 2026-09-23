@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
 
 import '../../../auth/pages/enum_transaction_page_state.dart';
-import '../error_state_widget.dart';
+import '../states/error_state_widget.dart';
 import '../idle_state_widget.dart';
 import '../playing_state_widget.dart';
-import '../processing_state_widget.dart';
+import '../states/processing_state_widget.dart';
 import '../recording_state_widget.dart';
 
 class TransactionStateDevPanel extends StatefulWidget {
