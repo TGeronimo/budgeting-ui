@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/core/dio/dio_client.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_app_test/features/transactions/widgets/temp/transaction_state_dev_panel.dart';
-import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
 
 import '../../auth/pages/enum_transaction_page_state.dart';
 
