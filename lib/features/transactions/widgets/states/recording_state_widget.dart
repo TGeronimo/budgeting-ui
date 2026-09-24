@@ -20,7 +20,9 @@ class RecordingStateWidget extends StatelessWidget{
       secondaryButton: Column(
         children: [
           FloatingActionButton(
+            shape: CircleBorder(),
               onPressed: () => context.read<AudioSessionCubit>().reset(), // TBD reset()
+            child: Icon(Icons.stop_rounded),
           ),
           SizedBox(height: 16),
           Text('Cancelar'),

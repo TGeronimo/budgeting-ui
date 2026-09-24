@@ -27,6 +27,7 @@ class BaseTransactionLayout extends StatelessWidget {
                 Text(message),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
                       backgroundColor: Color.fromARGB(255, 1, 10, 73)
                     ),
                     onPressed: onPressed,

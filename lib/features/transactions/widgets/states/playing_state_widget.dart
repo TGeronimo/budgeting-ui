@@ -18,8 +18,8 @@ class PlayingStateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseTransactionLayout(
       message: 'Clique para reproduzir',
-      iconData: Icons.play_arrow,
-      onPressed: context.read<AudioSessionCubit>().play(audioFile), // TBD play()
+      iconData: Icons.play_arrow_rounded,
+      onPressed: () => context.read<AudioSessionCubit>().play(audioFile), // TBD play()
       secondaryButton: Text('Reproduzindo...'),
     );
   }

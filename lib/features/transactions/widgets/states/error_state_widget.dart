@@ -15,9 +15,19 @@ class ErrorStateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseTransactionLayout(
       message: _errorMessage,
-      iconData: Icons.cancel,
+      iconData: Icons.cancel_rounded,
       onPressed: null,
-      secondaryButton: null,
+      secondaryButton: Column(
+        children: [
+          FloatingActionButton(
+            shape: CircleBorder(),
+            onPressed: () => context.read<AudioSessionCubit>().reset(), // TBD reset()),
+            child: Icon(Icons.cancel_rounded),
+          ),
+          SizedBox(height: 16),
+          Text('Descartar despesa'),
+        ],
+      ),
     );
   }
 }

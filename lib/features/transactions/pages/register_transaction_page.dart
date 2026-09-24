@@ -44,10 +44,8 @@ class RegisterTransactionPage extends StatelessWidget {
       AudioSessionRecording() => const RecordingStateWidget(),
       AudioSessionProcessing() => const ProcessingStateWidget(),
       AudioSessionPlaying(responseAudio: final audioFile) => PlayingStateWidget(audioFile: audioFile),
-      AudioSessionError(message: final msg) => ErrorStateWidget(message: msg),
+      AudioSessionError(message: final msg) => ErrorStateWidget(errorMessage: msg),
       _ => const SizedBox.shrink(),
     };
   }
-}
-
 }
