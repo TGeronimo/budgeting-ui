@@ -9,11 +9,11 @@ import '../features/transactions/pages/register_transaction_page.dart';
 
 class Routes {
   static final Map<String, WidgetBuilder> routes = {
-    '/':              (context) => LandingPage(),
+    '/':              (context) => RegisterTransactionPage(),
     '/sign_up_page':  (context) => SignUpPage(),
     '/log_in_page':    (context) => LogInPage(),
     '/menu_page':(context) => MenuPage(),
-    '/register_transaction_page':(context) => RegisterTransactionPage(),
+    // '/register_transaction_page':(context) => RegisterTransactionPage(),
     // '/get_transactions_page':(context) => GetTransactionsPage(),
 
     // TODO routing for the new transaction screens.

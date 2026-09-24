@@ -13,27 +13,38 @@ class RegisterTransactionPage extends StatelessWidget {
 
   const RegisterTransactionPage({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => AudioSessionCubit(),
+      child: const _RegisterTransactionView(),
+    );
+  }
+}
+
+class _RegisterTransactionView extends StatelessWidget {
+  const new();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AudioSessionCubit, AudioSessionState>(
-      listener: (context, state) {
-        // O Listener trata apenas EFEITOS COLATERAIS (SnackBars, Alertas, Navegação)
-        if (state is AudioSessionError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-            )
+        listener: (context, state) {
+          // O Listener trata apenas EFEITOS COLATERAIS (SnackBars, Alertas, Navegação)
+          if (state is AudioSessionError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.red,
+                )
+            );
+          }
+        },
+        builder: (context, state) {
+          // O Builder trata APENAS a construção visual baseada no estado atual
+          return Scaffold(
+            body: _buildBodyByState(state),
           );
         }
-      },
-      builder: (context, state) {
-        // O Builder trata APENAS a construção visual baseada no estado atual
-        return Scaffold(
-          body: _buildBodyByState(state),
-        );
-      }
     );
   }
 

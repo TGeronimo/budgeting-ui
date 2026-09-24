@@ -20,24 +20,53 @@ class BaseTransactionLayout extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 161, 195, 246),
       body: SafeArea(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 48, vertical: 48),
-            child: Column(
-              children: [
-                Text(message),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      backgroundColor: Color.fromARGB(255, 1, 10, 73)
-                    ),
-                    onPressed: onPressed,
-                    child: Icon(iconData),
-                ),
-                if (secondaryButton != null) ...[
-                  const SizedBox(height: 24),
-                  secondaryButton!,
-                ]
-              ],
+          child: Center(
+            child: SizedBox(
+              width: 230,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(message,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 48,),
+                  SizedBox(
+                    height: 230,
+                    width: 230,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          side: BorderSide(
+                            color: Colors.black12,
+                            width: 6,
+                            strokeAlign: -1,
+                          ),
+                          shadowColor: Colors.black,
+                          elevation: 8,
+                          shape: CircleBorder(),
+                          backgroundColor: Color.fromARGB(255, 1, 10, 73),
+                          // iconSize: 50,
+                        ),
+                        onPressed: onPressed,
+                          child: Icon(
+                            iconData,
+                            size: 120,
+                            color: Colors.white,
+                            shadows: [
+                              BoxShadow(
+                                color: Colors.white,
+                                blurRadius: 100,
+                              )
+                            ],
+                          ),
+                        ),
+                  ),
+                  if (secondaryButton != null) ...[
+                    const SizedBox(height: 24),
+                    secondaryButton!,
+                  ]
+                ],
+              ),
             ),
           ),
       ),
