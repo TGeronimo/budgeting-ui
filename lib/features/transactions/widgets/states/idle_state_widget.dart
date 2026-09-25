@@ -16,7 +16,8 @@ class IdleStateWidget extends StatelessWidget {
     return BaseTransactionLayout(
       message: 'Clique no microfone para registrar uma nova despesa',
       iconData: Icons.mic_rounded,
-      onPressed: () => context.read<AudioSessionCubit>().startRecording,
+      onPressed: () => context.read<AudioSessionCubit>().startRecording(),
+
       secondaryButton: null,
     );
   }

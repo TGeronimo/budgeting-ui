@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
+import 'package:flutter_app_test/features/transactions/services/audio_player_service.dart';
 import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,14 +12,17 @@ import 'package:record/record.dart';
 
 class AudioSessionCubit extends Cubit<AudioSessionState> {
   final AudioRecorder _audioRecorder;
+  final AudioPlayerService _audioPlayerService;
   final TransactionAiService _aiService;
 
-  late File _responseAudio;
+  File? _responseAudio;
 
   AudioSessionCubit({
     AudioRecorder? audioRecorder,
+    AudioPlayerService? audioPlayerService,
     TransactionAiService? aiService,
   }) :  _audioRecorder = audioRecorder ?? AudioRecorder(),
+        _audioPlayerService = audioPlayerService ?? AudioPlayerService(),
         _aiService = aiService ?? TransactionAiService(),
         super(AudioSessionIdle()); // define o estado inicial chamando o construtor de Cubit
 
@@ -85,13 +90,13 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
       emit(AudioSessionProcessing());
 
       _responseAudio = await _aiService.processAudio(audioInput);
-      debugPrint('Áudio de resposta salvo em ${_responseAudio.path}.');
+      debugPrint('Áudio de resposta salvo em ${_responseAudio!.path}.');
 
       // Apaga o arquivo temporário de envio do áudio da transação que acaba de ser registrada
       _safeDeleteFile(audioInput);
 
       emit(AudioSessionPlaying(
-          responseAudio: _responseAudio));
+          responseAudio: _responseAudio!));
 
     } catch (e) {
       debugPrint('Erro ao finalizar e enviar a gravação: $e');
@@ -116,16 +121,27 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
   @override
   Future<void> close() {
     _audioRecorder.dispose();
+    _audioPlayerService.dispose();
     return super.close();
   }
 
-  Widget reset() { // TODO
-    throw UnimplementedError();
+  Future<void> reset() async {
+    await _audioRecorder.stop();
+    await _audioPlayerService.stop();
+
+    await _safeDeleteFile(_responseAudio);
+
+    emit(AudioSessionIdle());
   }
 
-  VoidCallback? play(File audioFile) { // TODO
-    throw UnimplementedError();
+  Future<void> play(File audioFile) async {
+    _audioPlayerService.play(audioFile);
+    emit(AudioSessionIdle());
+  }
 
+  Future<void> stopPlaying() async {
+    await _audioPlayerService.stop();
+    emit(AudioSessionIdle());
   }
 
 

@@ -21,7 +21,7 @@ class RecordingStateWidget extends StatelessWidget{
         children: [
           FloatingActionButton(
             shape: CircleBorder(),
-              onPressed: () => context.read<AudioSessionCubit>().reset(), // TBD reset()
+              onPressed: () => context.read<AudioSessionCubit>().reset(),
             child: Icon(Icons.stop_rounded),
           ),
           SizedBox(height: 16),

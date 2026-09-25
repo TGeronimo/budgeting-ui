@@ -20,7 +20,7 @@ class PlayingStateWidget extends StatelessWidget {
       message: 'Clique para reproduzir',
       iconData: Icons.play_arrow_rounded,
       onPressed: () => context.read<AudioSessionCubit>().play(audioFile), // TBD play()
-      secondaryButton: Text('Reproduzindo...'),
+      secondaryButton: null,
     );
   }
 }

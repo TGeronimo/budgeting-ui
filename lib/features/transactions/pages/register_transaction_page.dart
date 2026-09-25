@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_test/core/dio/dio_client.dart';
+import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_cubit.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
+import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../widgets/states/error_state_widget.dart';
@@ -16,14 +19,18 @@ class RegisterTransactionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AudioSessionCubit(),
-      child: const _RegisterTransactionView(),
+      create: (context) {
+        final dioClient = DioClient(TokenStorage());
+        final dio = dioClient.dio;
+        final aiService = TransactionAiService(dio: dio);
+        return AudioSessionCubit(aiService: aiService);
+      },
+      child: _RegisterTransactionView(),
     );
   }
 }
 
 class _RegisterTransactionView extends StatelessWidget {
-  const new();
 
   @override
   Widget build(BuildContext context) {
