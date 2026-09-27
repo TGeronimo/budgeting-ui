@@ -8,7 +8,7 @@ class AudioPlayerService {
 
   AudioPlayerService({
     AudioPlayer? audioPlayer,
-}) :  _audioPlayer = audioPlayer ?? AudioPlayer();
+  }) :  _audioPlayer = audioPlayer ?? AudioPlayer();
 
   Future<void> play(File audioFile) async {
     await _audioPlayer.play(DeviceFileSource(audioFile.path));

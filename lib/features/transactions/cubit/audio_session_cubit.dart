@@ -1,27 +1,25 @@
 import 'dart:io';
 
-import 'package:audioplayers/audioplayers.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
 import 'package:flutter_app_test/features/transactions/services/audio_player_service.dart';
+import 'package:flutter_app_test/features/transactions/services/audio_recorder_service.dart';
 import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:record/record.dart';
 
 class AudioSessionCubit extends Cubit<AudioSessionState> {
-  final AudioRecorder _audioRecorder;
+  final AudioRecorderService _audioRecorderService;
   final AudioPlayerService _audioPlayerService;
   final TransactionAiService _aiService;
 
   File? _responseAudio;
 
   AudioSessionCubit({
-    AudioRecorder? audioRecorder,
+    AudioRecorderService? audioRecorder,
     AudioPlayerService? audioPlayerService,
     TransactionAiService? aiService,
-  }) :  _audioRecorder = audioRecorder ?? AudioRecorder(),
+  }) :  _audioRecorderService = audioRecorder ?? AudioRecorderService(),
         _audioPlayerService = audioPlayerService ?? AudioPlayerService(),
         _aiService = aiService ?? TransactionAiService(),
         super(AudioSessionIdle()); // define o estado inicial chamando o construtor de Cubit
@@ -32,7 +30,7 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
       // Apaga o arquivo temporário de resposta do servidor
       _safeDeleteFile(_responseAudio);
 
-      final hasPermission = await _audioRecorder.hasPermission();
+      final hasPermission = await _audioRecorderService.hasMicPermission();
       debugPrint('Permissão: $hasPermission');
 
       if(!hasPermission) {
@@ -46,10 +44,7 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
       final Directory tempDirectory = await getTemporaryDirectory();
       final audioPath = '${tempDirectory.path}/transaction.wav';
 
-      await _audioRecorder.start(
-          RecordConfig(encoder: AudioEncoder.wav),
-          path: audioPath,
-      );
+      await _audioRecorderService.startRecording(path: audioPath);
       debugPrint('Gravação iniciada no caminho: $audioPath');
 
       emit(AudioSessionRecording());
@@ -65,7 +60,7 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
 
   Future<void> stopAndUpload() async {
     try {
-      final String? outputAudioPath = await _audioRecorder.stop();
+      final String? outputAudioPath = await _audioRecorderService.stopRecording();
       debugPrint("Arquivo gravado em: $outputAudioPath.");
 
       if(outputAudioPath == null) {
@@ -120,13 +115,13 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
 
   @override
   Future<void> close() {
-    _audioRecorder.dispose();
+    _audioRecorderService.dispose();
     _audioPlayerService.dispose();
     return super.close();
   }
 
   Future<void> reset() async {
-    await _audioRecorder.stop();
+    await _audioRecorderService.stopRecording();
     await _audioPlayerService.stop();
 
     await _safeDeleteFile(_responseAudio);
@@ -134,7 +129,7 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
     emit(AudioSessionIdle());
   }
 
-  Future<void> play(File audioFile) async {
+  Future<void> playAudio(File audioFile) async {
     _audioPlayerService.play(audioFile);
     emit(AudioSessionIdle());
   }
