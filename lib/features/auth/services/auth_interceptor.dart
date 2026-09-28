@@ -23,8 +23,14 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
+    final path = err.requestOptions.path;
+
+    final isAuthRout =  path.contains('/auth/login') ||
+                        path.contains('/auth/register') ||
+                        path.contains('/auth/refresh');
+
     // Se não for 401, apenas repasse o erro
-    if (err.response?.statusCode != 401) {
+    if (err.response?.statusCode == 401&& isAuthRout) {
       handler.next(err);
       return;
     }

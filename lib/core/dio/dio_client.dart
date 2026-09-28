@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_app_test/features/auth/services/auth_interceptor.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
@@ -9,7 +11,7 @@ class DioClient {
   DioClient(this.tokenStorage)
     : dio = Dio(
         BaseOptions(
-          baseUrl: 'http://localhost:8080',
+          baseUrl: _getBaseUrl(),
           connectTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
           headers: {
@@ -31,4 +33,12 @@ class DioClient {
               dio)
           );
         }
+
+  static String _getBaseUrl() {
+    if (Platform.isAndroid) {
+      return 'http://localhost:8080';
+    }
+
+    return 'http://localhost:8081';
+  }
 }
