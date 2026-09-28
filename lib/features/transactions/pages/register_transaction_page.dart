@@ -18,14 +18,20 @@ class RegisterTransactionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final dioClient = DioClient(TokenStorage());
-        final dio = dioClient.dio;
-        final aiService = TransactionAiService(dio: dio);
-        return AudioSessionCubit(aiService: aiService);
-      },
-      child: _RegisterTransactionView(),
+    return PopScope(
+      onPopInvokedWithResult: ((didPop, result) {
+        // Força o fechamento do teclado no gesto de voltar
+        FocusManager.instance.primaryFocus?.unfocus();
+      }),
+      child: BlocProvider(
+        create: (context) {
+          final dioClient = DioClient(TokenStorage());
+          final dio = dioClient.dio;
+          final aiService = TransactionAiService(dio: dio);
+          return AudioSessionCubit(aiService: aiService);
+        },
+        child: _RegisterTransactionView(),
+      ),
     );
   }
 }
