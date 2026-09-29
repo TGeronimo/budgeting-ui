@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
 import 'package:flutter_app_test/features/transactions/services/audio_player_service.dart';
@@ -24,6 +25,15 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
         _aiService = aiService ?? TransactionAiService(),
         super(AudioSessionIdle()); // define o estado inicial chamando o construtor de Cubit
 
+  Future<String> _getAudioPath() async {
+    if(kIsWeb) {
+      return '';
+    }
+
+    final Directory tempDirectory = await getTemporaryDirectory();
+
+    return '${tempDirectory.path}/transaction.wav';
+  }
 
   Future<void> startRecording() async {
     try {
@@ -41,8 +51,7 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
         return;
       }
 
-      final Directory tempDirectory = await getTemporaryDirectory();
-      final audioPath = '${tempDirectory.path}/transaction.wav';
+      final audioPath = await _getAudioPath();
 
       await _audioRecorderService.startRecording(path: audioPath);
       debugPrint('Gravação iniciada no caminho: $audioPath');
