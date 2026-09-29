@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_app_test/features/auth/services/auth_interceptor.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 
@@ -35,6 +36,10 @@ class DioClient {
         }
 
   static String _getBaseUrl() {
+    if(kIsWeb) {
+      return  'http://localhost:8081';
+    }
+
     if (Platform.isAndroid) {
       return 'http://localhost:8080';
     }

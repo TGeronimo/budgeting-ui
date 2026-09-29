@@ -25,43 +25,67 @@ class AuthInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final path = err.requestOptions.path;
 
-    final isAuthRout =  path.contains('/auth/login') ||
-                        path.contains('/auth/register') ||
-                        path.contains('/auth/refresh');
+    final isAuthRoute = path.contains('/auth/login') ||
+        path.contains('/auth/register') ||
+        path.contains('/auth/refresh');
 
-    // Se não for 401, apenas repasse o erro
-    if (err.response?.statusCode == 401&& isAuthRout) {
+    // 1. Se for erro de rotas de auth OU não for 401, apenas repassa o erro normalmente
+    if (err.response?.statusCode != 401 || isAuthRoute) {
       handler.next(err);
       return;
     }
 
     try {
-      // 1. Tenta renovar o token
+      // 2. Tenta renovar o token
       final newTokens = await _refreshToken();
 
-      // 2. Salva os novos tokens
+      // 3. Salva os novos tokens
       await tokenStorage.saveAccessToken(newTokens.accessToken);
       await tokenStorage.saveRefreshToken(newTokens.refreshToken);
 
-      // 3. Clona a requisição original
+      // 4. Clona as opções da requisição original
       final originalRequest = err.requestOptions;
 
-      // 4. Atualiza o header com o novo token
+      // 5. Atualiza o header com o novo token
       originalRequest.headers['Authorization'] = 'Bearer ${newTokens.accessToken}';
 
-      // 5. Reenvia a requisição original
+      // 6. SE a requisição continha FormData, clonamos os dados para reabrir a stream do arquivo
+      if (originalRequest.data is FormData) {
+        originalRequest.data = await _cloneFormData(originalRequest.data as FormData);
+      }
+
+      // 7. Reenvia a requisição original
       final response = await dio.fetch(originalRequest);
 
-      // 6. Retorna a nova resposta
+      // 8. Retorna a nova resposta
       handler.resolve(response);
 
     } catch (e) {
-      // Caso falhe, limpa os tokens e notifica o usuário
+      // Caso falhe o refresh, limpa os tokens e notifica a expiração da sessão
       await tokenStorage.clear();
       SessionManager.instance.notifySessionExpired();
-      // Se falhar, o usuário precisa logar de novo
       handler.next(err);
     }
+  }
+
+  /// Função auxiliar para clonar o FormData e recriar os MultipartFiles
+  Future<FormData> _cloneFormData(FormData formData) async {
+    final clonedFormData = FormData();
+
+    // Clona os campos de texto
+    clonedFormData.fields.addAll(formData.fields);
+
+    // Reabre e clona os arquivos do FormData
+    for (final file in formData.files) {
+      if (file.value is MultipartFile) {
+        final originalFile = file.value;
+        clonedFormData.files.add(
+          MapEntry(file.key, originalFile.clone()),
+        );
+      }
+    }
+
+    return clonedFormData;
   }
 
   Future<LoginResponseDto> _refreshToken() async {
