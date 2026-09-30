@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/audio_session_cubit.dart';
-import '../base_transaction_layout.dart';
+import '../../../cubit/audio_session_cubit.dart';
+import '../../register_transaction_layout.dart';
 
 class RecordingStateWidget extends StatelessWidget{
 

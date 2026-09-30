@@ -3,6 +3,8 @@ import 'package:flutter_app_test/core/dio/dio_client.dart';
 import 'package:flutter_app_test/features/auth/services/token_storage.dart';
 import 'package:flutter_app_test/features/transactions/cubit/get_category_cubit.dart';
 import 'package:flutter_app_test/features/transactions/cubit/get_category_state.dart';
+import 'package:flutter_app_test/features/transactions/pages/register_transaction_page.dart';
+import 'package:flutter_app_test/features/transactions/widgets/get_transaction_layout.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GetTransactionsPage extends StatelessWidget {
@@ -53,13 +55,11 @@ class _GetTransactionView extends StatelessWidget {
   }
 
   /// Méthodo auxiliar para retornar o Widget correto com base no estado imutável do Cubit
-  Widget _buildBodyByState(AudioSessionState state) {
+  Widget _buildBodyByState(GetCategoryState state) {
     return switch (state) {
-      AudioSessionIdle() => const IdleStateWidget(),
-      AudioSessionRecording() => const RecordingStateWidget(),
-      AudioSessionProcessing() => const ProcessingStateWidget(),
-      AudioSessionPlaying(responseAudio: final audioFile) => PlayingStateWidget(audioFile: audioFile),
-      AudioSessionError(message: final msg) => ErrorStateWidget(errorMessage: msg),
+      GetCategoryIdle() => GetTransactionLayout(),
+      // GetCategoryLoading() => const RecordingStateWidget(),
+      // GetCategoryError(message: final msg) => ErrorStateWidget(errorMessage: msg),
       _ => const SizedBox.shrink(),
     };
   }

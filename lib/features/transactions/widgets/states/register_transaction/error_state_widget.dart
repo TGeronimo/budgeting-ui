@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_cubit.dart';
-import 'package:flutter_app_test/features/transactions/widgets/base_transaction_layout.dart';
+import 'package:flutter_app_test/features/transactions/widgets/register_transaction_layout.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ErrorStateWidget extends StatelessWidget {

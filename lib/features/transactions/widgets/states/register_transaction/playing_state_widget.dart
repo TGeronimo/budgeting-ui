@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../base_transaction_layout.dart';
+import '../../register_transaction_layout.dart';
 
 class PlayingStateWidget extends StatelessWidget {
   final File audioFile;

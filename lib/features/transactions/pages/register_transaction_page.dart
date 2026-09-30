@@ -6,11 +6,11 @@ import 'package:flutter_app_test/features/transactions/cubit/audio_session_state
 import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../widgets/states/error_state_widget.dart';
-import '../widgets/states/idle_state_widget.dart';
-import '../widgets/states/playing_state_widget.dart';
-import '../widgets/states/processing_state_widget.dart';
-import '../widgets/states/recording_state_widget.dart';
+import '../widgets/states/register_transaction/error_state_widget.dart';
+import '../widgets/states/register_transaction/idle_state_widget.dart';
+import '../widgets/states/register_transaction/playing_state_widget.dart';
+import '../widgets/states/register_transaction/processing_state_widget.dart';
+import '../widgets/states/register_transaction/recording_state_widget.dart';
 
 class RegisterTransactionPage extends StatelessWidget {
 

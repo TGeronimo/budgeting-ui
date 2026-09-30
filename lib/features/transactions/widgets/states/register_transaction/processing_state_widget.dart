@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../base_transaction_layout.dart';
+import '../../register_transaction_layout.dart';
 
 class ProcessingStateWidget extends StatelessWidget {
 
