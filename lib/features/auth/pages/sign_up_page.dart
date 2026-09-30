@@ -52,9 +52,8 @@ class _SignUpPageState extends State<SignUpPage> {
             await _tokenStorage.saveAccessToken(loginResponse.accessToken);
             await _tokenStorage.saveRefreshToken(loginResponse.refreshToken);
 
-            if (mounted) {
-              Navigator.pushNamed(context, '/menu_page');
-            }
+            if (!mounted) return;
+            Navigator.pushNamed(context, '/menu_page');
           } catch (e) {
             if (mounted) {
               setState(() {
@@ -62,11 +61,12 @@ class _SignUpPageState extends State<SignUpPage> {
               });
             }
 
+            if (!mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Erro ao registrar: $e'),
-                  duration: Duration(seconds: 3),
-                )
+              SnackBar(
+                content: Text('Erro ao registrar: $e'),
+                duration: const Duration(seconds: 3),
+              ),
             );
           } finally {
             if (mounted) {
