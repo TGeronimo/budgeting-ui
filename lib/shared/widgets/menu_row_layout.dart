@@ -4,7 +4,7 @@ import 'package:flutter_app_test/shared/widgets/option_card.dart';
 class MenuRowLayout extends StatelessWidget {
   final BoxConstraints constraints;
 
-  MenuRowLayout({
+  const MenuRowLayout({
     super.key,
     required this.constraints,
   });

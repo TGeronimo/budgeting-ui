@@ -3,7 +3,7 @@ import 'package:flutter_app_test/shared/widgets/menu_row_layout.dart';
 import 'package:flutter_app_test/shared/widgets/menu_column_layout.dart';
 
 class MenuPage extends StatelessWidget {
-  MenuPage({super.key});
+  const MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {

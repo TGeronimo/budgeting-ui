@@ -19,8 +19,8 @@ class UserRegisterDto {
 
   LoginDto toLoginDto() {
     return LoginDto(
-      email: this.email,
-      password: this.password);
+      email: email,
+      password: password);
   }
 
 }

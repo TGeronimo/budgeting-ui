@@ -77,12 +77,10 @@ class AuthInterceptor extends Interceptor {
 
     // Reabre e clona os arquivos do FormData
     for (final file in formData.files) {
-      if (file.value is MultipartFile) {
-        final originalFile = file.value;
-        clonedFormData.files.add(
-          MapEntry(file.key, originalFile.clone()),
-        );
-      }
+      final originalFile = file.value;
+      clonedFormData.files.add(
+        MapEntry(file.key, originalFile.clone()),
+      );
     }
 
     return clonedFormData;
