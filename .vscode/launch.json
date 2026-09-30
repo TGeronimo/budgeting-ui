@@ -44,6 +44,12 @@
             "flutterMode": "release"
         },
         {
+            "name": "Flutter",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart"
+        },
+        {
             "name": "Flutter Web",
             "request": "launch",
             "type": "dart",
