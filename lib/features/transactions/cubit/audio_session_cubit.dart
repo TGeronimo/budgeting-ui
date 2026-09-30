@@ -1,12 +1,18 @@
+import 'dart:ffi';
 import 'dart:io';
+import 'dart:js_interop';
+import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_app_test/features/transactions/cubit/audio_session_state.dart';
 import 'package:flutter_app_test/features/transactions/services/audio_player_service.dart';
 import 'package:flutter_app_test/features/transactions/services/audio_recorder_service.dart';
 import 'package:flutter_app_test/features/transactions/services/transaction_ai_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:web/helpers.dart';
+import 'package:web/web.dart' as web;
 
 class AudioSessionCubit extends Cubit<AudioSessionState> {
   final AudioRecorderService _audioRecorderService;
@@ -41,12 +47,7 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
         return;
       }
 
-      final Directory tempDirectory = await getTemporaryDirectory();
-      final audioPath = '${tempDirectory.path}/transaction.wav';
-
-      await _audioRecorderService.startRecording(path: audioPath);
-      debugPrint('Gravação iniciada no caminho: $audioPath');
-
+      await _audioRecorderService.startRecording();
       emit(AudioSessionRecording());
 
     } catch (e) {
@@ -63,6 +64,8 @@ class AudioSessionCubit extends Cubit<AudioSessionState> {
       final String? outputAudioPath = await _audioRecorderService.stopRecording();
       debugPrint("Arquivo gravado em: $outputAudioPath.");
 
+      final blob = web.URL.createObjectURL(web.Blob(<JSUint8Array>[Uint8List.fromList(<int>[]).toJS].toJS));
+      debugPrint(blob);
       if(outputAudioPath == null) {
         emit(AudioSessionError(
             message: 'Não foi possível recuperar o caminho do áudio gravado.',
